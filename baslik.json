@@ -1,0 +1,70 @@
+[
+    {
+        "id": 0,
+        "ustBaslik": "Kredi Hesaplama Araçları",
+        "altBasliklar": [
+            "Kredi Dosya Masrafı Hesaplama Aracı",
+            "Kredi Erken Kapatma Cezası Hesaplama Aracı",
+            "Kredi Kartı Asgari Ödeme Tutarı Hesaplama Aracı"
+        ]
+    },
+    {
+        "id": 1,
+        "ustBaslik": "Finans Hesaplama Araçları",
+        "altBasliklar": [
+            "Altın Hesaplama Aracı",
+            "Dolar Hesaplama Aracı",
+            "Euro Hesaplama Aracı",
+            "Sterlin Hesaplama Aracı"
+        ]
+    },
+    {
+        "id": 2,
+        "ustBaslik": "Eğitim Hesaplama Araçları",
+        "altBasliklar": [
+            "Ders Notu Hesaplama Aracı",
+            "Lise Ders Puanı Hesaplama"
+        ]
+    },
+    {
+        "id": 3,
+        "ustBaslik": "Sağlık Hesaplama Araçları",
+        "altBasliklar": [
+            "Aşı Takvimi",
+            "Gebelik Hesaplama Aracı",
+            "Günlük Su İhtiyacı Hesaplama Aracı",
+            "Sigara Maliyeti Hesaplama Aracı"
+        ]
+    },
+    {
+        "id": 4,
+        "ustBaslik": "Matematik Hesaplama Araçları",
+        "altBasliklar": [
+            "Alan Hesaplama Aracı",
+            "İnç Hesaplama Aracı",
+            "Çevre Hesaplama Aracı",
+            "Mil Hesaplama Aracı",
+            "Yüzde Hesaplama Aracı"
+        ]
+    },
+    {
+        "id": 5,
+        "ustBaslik": "Muhasebe Hesaplama Araçları",
+        "altBasliklar": [
+            "İhbar Tazminatı Hesaplama Aracı",
+            "Maaş Hesaplamaları (Brüt-Net)",
+            "Yıllık İzin Hesaplama Aracı"
+        ]
+    },
+    {
+        "id": 6,
+        "ustBaslik": "Ticari Hesaplama Araçları",
+        "altBasliklar": [
+            "Desi Hesaplama Aracı",
+            "İndirim Hesaplama Aracı",
+            "Kâr Hesaplama Aracı",
+            "Zam Hesaplama Aracı",
+            "Zarar Hesaplama Aracı"
+        ]
+    }
+]
