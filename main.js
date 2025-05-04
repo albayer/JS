@@ -204,15 +204,7 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
-                            }
-
-
-
-
-
-
-
-                            else if (secilenAltBaslik == "Dolar Hesaplama Aracı") {
+                            } else if (secilenAltBaslik == "Dolar Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;flex-direction: column;justify-content: center;"
                                 hesaplaPop.innerHTML = `<div>
                                                             <div>
@@ -236,12 +228,9 @@ fetch('baslik.json')
                                                         </div>`
 
                                 let dolarGiris = document.querySelector('#dolarGiris')
-                                let liraGiris = document.querySelector('#liraGiris')
-                                let dolarLiraRadio = document.getElementById("dolarTl");
-                                let liraDolarRadio = document.getElementById("tlDolar");
-                                let dolarDiv = document.getElementById("dolarDiv");
+                                let dolarLiraRadio = document.getElementById("dolarTl")
+                                let liraDolarRadio = document.getElementById("tlDolar")
                                 let dolardanLira = document.querySelector('#dolardanLira')
-                                let liradanDolar = document.querySelector('#liradanDolar')
 
                                 dolarLiraRadio.value = 35
                                 liraDolarRadio.value = 0.026
@@ -249,7 +238,7 @@ fetch('baslik.json')
                                 dolardanLira.addEventListener('click', function (event) {
                                     event.preventDefault()
                                     if (dolarLiraRadio.checked) {
-                                        if (dolarGiris.value == '') {
+                                        if (dolarGiris.value == '' && dolarLiraRadio.checked == 1) {
                                             alert('Lütfen Tüm Alanları Doldurduğunuzdan Emin Olun')
                                         } else {
                                             hesaplaPop.innerHTML = `<div style="display:flex; flex-direction:column; row-gap:10px;">
@@ -274,6 +263,126 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
+                            } else if (secilenAltBaslik == "Euro Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;flex-direction: column;justify-content: center;"
+                                hesaplaPop.innerHTML = `<div>
+                                                            <div>
+                                                                <h3>| ${secilenAltBaslik} |</h3>
+                                                            </div>
+                                                            <form style="flex-direction: column;row-gap: 10px;">
+                                                                <div>
+                                                                    <div>
+                                                                    <b>İşlem Türü </b>
+                                                                        <div id="radioChangeEuro">
+                                                                        <div>Euro'dan Lira'ya<input type="radio" name="euroLira" id="euroTl" value="euroLira"></div>
+                                                                        <div>Lira'dan Euro'ya<input type="radio" name="euroLira" id="tlEuro" value="liraEuro"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="euroDiv">
+                                                                <b>Tutar: </b><input type="text" name="" id="euroGiris"> 
+                                                                <input type="submit" value="Hesapla" id="eurodanLira">
+                                                                </div>
+                                                            </form>
+                                                        </div>`
+
+                                let euroGiris = document.querySelector('#euroGiris')
+                                let euroLiraRadio = document.getElementById("euroTl");
+                                let liraEuroRadio = document.getElementById("tlEuro");
+                                let euroDiv = document.getElementById("euroDiv");
+                                let eurodanLira = document.querySelector('#eurodanLira')
+
+                                euroLiraRadio.value = 40
+                                liraEuroRadio.value = 0.023
+
+                                eurodanLira.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (euroLiraRadio.checked) {
+                                        if (euroGiris.value == '') {
+                                            alert('Lütfen Tüm Alanları Doldurduğunuzdan Emin Olun')
+                                        } else {
+                                            hesaplaPop.innerHTML = `<div style="display:flex; flex-direction:column; row-gap:10px;">
+                                                                        <div><h3>${secilenAltBaslik} Sonuçları</h3></div>
+                                                                        <div><b>Alış Birim Fiyatı: </b>1 Euro ${euroLiraRadio.value} TL'dir</div>
+                                                                        <div><b>Giriş Miktarınız: </b>${euroGiris.value} Euro</div>
+                                                                        <div>${euroGiris.value} Euro için ödemeniz gereken toplam tutar ${euroGiris.value * euroLiraRadio.value} TL'dir</div>
+                                                                        <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>Bilgi:</b> Bu hesaplama 02.05.2025 23:00 tarihindeki piyasa verileri kullanılarak yapılmıştır</div>
+                                                                    </div>`
+                                        }
+                                    } else if (liraEuroRadio.checked) {
+                                        if (euroGiris.value == '') {
+                                            alert('Lütfen Tüm Alanları Doldurduğunuzdan Emin Olun')
+                                        } else {
+                                            hesaplaPop.innerHTML = `<div style="display:flex; flex-direction:column; row-gap:10px;">
+                                                                        <div><h3>${secilenAltBaslik} Sonuçları</h3></div>
+                                                                        <div><b>Alış Birim Fiyatı: </b>1 Türk Lira'sı ${euroLiraRadio.value} Euro'dur.</div>
+                                                                        <div><b>Giriş Miktarınız: </b>${euroGiris.value} Lira</div>
+                                                                        <div>${euroGiris.value} Türk Lira'sı için ödemeniz gereken toplam tutar ${euroGiris.value / euroLiraRadio.value} Euro'dur.</div>
+                                                                        <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>Bilgi:</b> Bu hesaplama 02.05.2025 23:00 tarihindeki piyasa verileri kullanılarak yapılmıştır</div>
+                                                                    </div>`
+                                        }
+                                    }
+                                })
+                            } else if (secilenAltBaslik == "Sterlin Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;flex-direction: column;justify-content: center;"
+                                hesaplaPop.innerHTML = `<div>
+                                                            <div>
+                                                                <h3>| ${secilenAltBaslik} |</h3>
+                                                            </div>
+                                                            <form style="flex-direction: column;row-gap: 10px;">
+                                                                <div>
+                                                                    <div>
+                                                                    <b>İşlem Türü </b>
+                                                                        <div id="radioChangeSterlin">
+                                                                        <div>Sterlin'den Lira'ya<input type="radio" name="sterlinLira" id="sterlinTl" value="sterlinLira"></div>
+                                                                        <div>Lira'dan Sterlin'e<input type="radio" name="sterlinLira" id="tlSterlin" value="liraSterlin"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="euroDiv">
+                                                                <b>Tutar: </b><input type="text" name="" id="sterlinGiris"> 
+                                                                <input type="submit" value="Hesapla" id="sterlindenLira">
+                                                                </div>
+                                                            </form>
+                                                        </div>`
+
+                                let sterlinGiris = document.querySelector('#sterlinGiris')
+                                let sterlinLiraRadio = document.getElementById("sterlinTl");
+                                let liraSterlinRadio = document.getElementById("tlSterlin");
+                                let sterlinDiv = document.getElementById("sterlinDiv");
+                                let sterlindenLira = document.querySelector('#sterlindenLira')
+
+                                sterlinLiraRadio.value = 40
+                                liraSterlinRadio.value = 0.023
+
+                                sterlindenLira.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (sterlinLiraRadio.checked) {
+                                        if (sterlinGiris.value == '') {
+                                            alert('Lütfen Tüm Alanları Doldurduğunuzdan Emin Olun')
+                                        } else {
+                                            hesaplaPop.innerHTML = `<div style="display:flex; flex-direction:column; row-gap:10px;">
+                                                                        <div><h3>${secilenAltBaslik} Sonuçları</h3></div>
+                                                                        <div><b>Alış Birim Fiyatı: </b>1 Sterlin ${sterlinLiraRadio.value} TL'dir</div>
+                                                                        <div><b>Giriş Miktarınız: </b>${sterlinGiris.value} Sterlin</div>
+                                                                        <div>${sterlinGiris.value} Sterlin için ödemeniz gereken toplam tutar ${sterlinGiris.value * sterlinLiraRadio.value} TL'dir</div>
+                                                                        <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>Bilgi:</b> Bu hesaplama 02.05.2025 23:00 tarihindeki piyasa verileri kullanılarak yapılmıştır</div>
+                                                                    </div>`
+                                        }
+                                    } else if (liraSterlinRadio.checked) {
+                                        if (sterlinGiris.value == '') {
+                                            alert('Lütfen Tüm Alanları Doldurduğunuzdan Emin Olun')
+                                        } else {
+                                            hesaplaPop.innerHTML = `<div style="display:flex; flex-direction:column; row-gap:10px;">
+                                                                        <div><h3>${secilenAltBaslik} Sonuçları</h3></div>
+                                                                        <div><b>Alış Birim Fiyatı: </b>1 Türk Lira'sı ${liraSterlinRadio.value} Euro'dur.</div>
+                                                                        <div><b>Giriş Miktarınız: </b>${sterlinGiris.value} Lira</div>
+                                                                        <div>${sterlinGiris.value} Türk Lira'sı için ödemeniz gereken toplam tutar ${sterlinGiris.value / sterlinLiraRadio.value} Euro'dur.</div>
+                                                                        <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>Bilgi:</b> Bu hesaplama 02.05.2025 23:00 tarihindeki piyasa verileri kullanılarak yapılmıştır</div>
+                                                                    </div>`
+                                        }
+                                    }
+                                })
                             }
 
 
@@ -282,18 +391,50 @@ fetch('baslik.json')
 
 
 
-                            else if (secilenAltBaslik == "Euro Hesaplama Aracı") {
-                                hesaplaPop.style = "display:flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı6:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Sterlin Hesaplama Aracı") {
-                                hesaplaPop.style = "display:flex;"
+
+                            else if (secilenAltBaslik == "Ders Notu Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;flex-direction: column;justify-content: flex-start;"
+                                hesaplaPop.innerHTML = `<form style = "flex-direction: column;"><div>
+                                                            <div style="background-color: #2D3940;color: #fff;margin-top: 10px; padding:5px 5px;border-radius: 4px;"><b>NOT: </b>2023 - 2024 eğitim yılı ve sonrasına (2024 - 2025 dahil) uyumlu olarak hazırlanmıştır. Puanını boş bıraktığınız kısımlar ortalama hesaplamalarına dahil edilmeyecektir.</div>
+                                                            <div><h3 style="margin: 13px 0px;">| ${secilenAltBaslik} |</h3></div>
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr id="tr" style="display:flex; flex-direction:column; row-gap:5px;align-items: end;margin-left: 80px;">
+                                                                            <td><div><b>1. Yazılı Sınav:</b><input type="text" name="" id="sinav1"></div></td>
+                                                                            <td><div><b>2. Yazılı Sınav:</b><input type="text" name="" id="sinav2"></div></td>
+                                                                            <td><div><b>1. Ders Etkin. Katılım:</b><input type="text" name="" id="etkinlik1"></div></td>
+                                                                            <td><div><b>2. Ders Etkin. Katılım:</b><input type="text" name="" id="etkinlik2"></div></td>
+                                                                            <td><div><b>3. Ders Etkin. Katılım:</b><input type="text" name="" id="etkinlik3"></div></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                <input type="submit" value="Hesapla" id="dersHesapla" style="width:67%; margin-top:5px;"></div></form>`
+
+                                let sinav1 = document.querySelector('#sinav1')
+                                let sinav2 = document.querySelector('#sinav2')
+                                let etkinlik1 = document.querySelector('#etkinlik1')
+                                let etkinlik2 = document.querySelector('#etkinlik2')
+                                let etkinlik3 = document.querySelector('#etkinlik3')
+                                let dersHesapla = document.querySelector('#dersHesapla')
+                                let tr = document.querySelector('#tr')
+
+                                dersHesapla.addEventListener('click',function(event){
+                                    event.preventDefault()
 
 
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı7:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Ders Notu Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı8:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Lise Ders Puanı Hesaplama") {
+                                    ortalama =(sinav1.value+sinav2.value+etkinlik1.value+etkinlik2.value+etkinlik3.value)/5
+                                    hesaplaPop.innerHTML = `${ortalama}`
+                                })
+
+                                sinav1.value == null
+
+
+
+                            }
+
+
+                            else if (secilenAltBaslik == "Lise Ders Puanı Hesaplama") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı9:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Aşı Takvimi") {
