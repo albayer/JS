@@ -409,12 +409,6 @@ fetch('baslik.json')
                                 let etkinlikkk = document.querySelector('#etkinlikkk')
                                 let dersHesapla = document.querySelector('#dersHesapla')
 
-                                parseFloat(sinav)
-                                parseFloat(sinavv)
-                                parseFloat(etkinlik)
-                                parseFloat(etkinlikk)
-                                parseFloat(etkinlikkk)
-
                                 dersHesapla.addEventListener('click', function (event) {
                                     hesaplaPop.style = "display:flex;"
                                     event.preventDefault()
@@ -422,7 +416,6 @@ fetch('baslik.json')
                                         alert('Hata oluştu.')
                                     } else if (sinav.value !== "" && etkinlik.value !== "") {
                                         hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${sinav.value}</div><div><b>Ders Etkinliklerine Katılım Ortalaması:</b> ${etkinlik.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav.value) + parseFloat(etkinlik.value)) / 2}</div></div>`
-
                                     } else if (sinav.value !== "" && sinavv.value !== "" && etkinlik.value !== "") {
                                         hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>${(parseFloat(sinav.value) + parseFloat(sinavv.value) + parseFloat(etkinlik.value)) / 3}`
                                     } else if (sinav.value !== "" && sinavv.value !== "" && etkinlik.value !== "" && etkinlikk.value !== "") {
@@ -431,13 +424,7 @@ fetch('baslik.json')
                                         hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>${(parseFloat(sinav.value) + parseFloat(sinavv.value) + parseFloat(etkinlik.value) + parseFloat(etkinlikk.value) + parseFloat(etkinlikkk.value)) / 5}`
                                     }
                                 })
-                            }
-
-
-
-
-                            
-                            else if (secilenAltBaslik == "Lise Ders Puanı Hesaplama") {
+                            } else if (secilenAltBaslik == "Lise Ders Puanı Hesaplama") {
                                 hesaplaPop.style = "display:flex;flex-direction: column;justify-content: flex-start;"
                                 hesaplaPop.innerHTML = `<form style = "flex-direction: column;"><div>
                                                             <div style="background-color: #2D3940;color: #fff;margin-top: 10px; padding:5px 5px;border-radius: 4px;"><b>NOT: </b>2023 - 2024 eğitim yılı ve sonrasına (2024 - 2025 dahil) uyumlu olarak hazırlanmıştır. Puanını boş bıraktığınız kısımlar ortalama hesaplamalarına dahil edilmeyecektir.</div>
@@ -445,8 +432,8 @@ fetch('baslik.json')
                                                                 <table>
                                                                     <tbody>
                                                                         <tr id="tr" style="display:flex; flex-direction:column; row-gap:5px;align-items: end;margin-left: 80px;">
-                                                                            <td><div><b>1. Yazılı Sınav:</b><input type="text" name="" id="sinav"></div></td>
-                                                                            <td><div><b>2. Yazılı Sınav:</b><input type="text" name="" id="sinavv"></div></td>
+                                                                            <td><div><b>1. Yazılı Sınav:</b><input type="text" name="" id="sinav1"></div></td>
+                                                                            <td><div><b>2. Yazılı Sınav:</b><input type="text" name="" id="sinav2"></div></td>
                                                                             <td><div><b>1. Performans Görevi: </b><input type="text" name="" id="performans1"></div></td>
                                                                             <td><div><b>2. Performans Görevi: </b><input type="text" name="" id="performans2"></div></td>
                                                                             <td><div><b>1.Uygulama: </b><input type="text" name="" id="uygulama1"></div></td>
@@ -455,46 +442,63 @@ fetch('baslik.json')
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                <input type="submit" value="Hesapla" id="dersHesapla" style="width:67%; margin-top:5px;"></div></form>`
+                                <input type="submit" value="Hesapla" id="liseDersHesapla" style="width:67%; margin-top:5px;"></div></form>`
 
-                                let sinav = document.querySelector('#sinav')
-                                let sinavv = document.querySelector('#sinavv')
-                                let etkinlik = document.querySelector('#etkinlik')
-                                let etkinlikk = document.querySelector('#etkinlikk')
-                                let etkinlikkk = document.querySelector('#etkinlikkk')
-                                let dersHesapla = document.querySelector('#dersHesapla')
+                                let sinav1 = document.querySelector('#sinav1')
+                                let sinav2 = document.querySelector('#sinav2')
+                                let performans1 = document.querySelector('#performans1')
+                                let performans2 = document.querySelector('#performans2')
+                                let uygulama1 = document.querySelector('#uygulama1')
+                                let uygulama2 = document.querySelector('#uygulama2')
+                                let liseDersHesapla = document.querySelector('#liseDersHesapla')
 
-                                parseFloat(sinav)
-                                parseFloat(sinavv)
-                                parseFloat(etkinlik)
-                                parseFloat(etkinlikk)
-                                parseFloat(etkinlikkk)
-
-                                dersHesapla.addEventListener('click', function (event) {
+                                liseDersHesapla.addEventListener('click', function (event) {
                                     hesaplaPop.style = "display:flex;"
                                     event.preventDefault()
-                                    if (sinav.value == "" && sinavv.value == "" && etkinlik.value == "" && etkinlikk.value == "" && etkinlikkk.value == "") {
+                                    if (sinav1.value == "" && sinav2.value == "" && performans1.value == "" && performans2.value == "" && uygulama1.value == "" && uygulama2.value == "") {
                                         alert('Hata oluştu.')
-                                    } else if (sinav.value !== "" && etkinlik.value !== "") {
-                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${sinav.value}</div><div><b>Ders Etkinliklerine Katılım Ortalaması:</b> ${etkinlik.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav.value) + parseFloat(etkinlik.value)) / 2}</div></div>`
-
-                                    } else if (sinav.value !== "" && sinavv.value !== "" && etkinlik.value !== "") {
-                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>${(parseFloat(sinav.value) + parseFloat(sinavv.value) + parseFloat(etkinlik.value)) / 3}`
-                                    } else if (sinav.value !== "" && sinavv.value !== "" && etkinlik.value !== "" && etkinlikk.value !== "") {
-                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>${(parseFloat(sinav.value) + parseFloat(sinavv.value) + parseFloat(etkinlik.value) + parseFloat(etkinlikk.value)) / 4}`
-                                    } else if (sinav.value !== "" && sinavv.value !== "" && etkinlik.value !== "" && etkinlikk.value !== "" && etkinlikkk.value !== "") {
-                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>${(parseFloat(sinav.value) + parseFloat(sinavv.value) + parseFloat(etkinlik.value) + parseFloat(etkinlikk.value) + parseFloat(etkinlikkk.value)) / 5}`
+                                    }
+                                    else if (sinav1.value !== "" && sinav2.value !== "" && performans1.value !== "" && performans2.value !== "" && uygulama1.value !== "" && uygulama2.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;">
+                                                                                                        <div><b>Yazılı Sınav Ortalaması: </b>${parseFloat(sinav1.value) + parseFloat(sinav2.value)}</div>
+                                                                                                        <div><b>Performans Puan Ortalaması:</b> ${(parseFloat(performans1.value) + parseFloat(performans2.value))}</div>
+                                                                                                        <div><b>Uygulama Puan Ortalaması:</b> ${(parseFloat(uygulama1.value) + parseFloat(uygulama2.value))}</div>
+                                                                                                        <div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(sinav2.value) + parseFloat(performans1.value) + parseFloat(performans2.value) + parseFloat(uygulama1.value) + parseFloat(uygulama2.value)) / 6}</div>
+                                                                                                    </div>`
+                                    } else if (sinav1.value !== "" && sinav2.value !== "" && performans1.value !== "" && performans2.value !== "" && uygulama1.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;">
+                                                                                                        <div><b>Yazılı Sınav Ortalaması: </b>${parseFloat(sinav1.value) + parseFloat(sinav2.value)}</div>
+                                                                                                        <div><b>Performans Puan Ortalaması:</b> ${(parseFloat(performans1.value) + parseFloat(performans2.value))}</div>
+                                                                                                        <div><b>Uygulama Puan Ortalaması:</b> ${parseFloat(uygulama1.value)}</div>
+                                                                                                        <div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(sinav2.value) + parseFloat(performans1.value) + parseFloat(performans2.value) + parseFloat(uygulama1.value)) / 5}</div>
+                                                                                                    </div>`
+                                    } else if (sinav1.value !== "" && sinav2.value !== "" && performans1.value !== "" && performans2.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;">
+                                                                                                        <div><b>Yazılı Sınav Ortalaması: </b>${parseFloat(sinav1.value) + parseFloat(sinav2.value)}</div>
+                                                                                                        <div><b>Performans Puan Ortalaması:</b> ${(parseFloat(performans1.value) + parseFloat(performans2.value))}</div>
+                                                                                                        <div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(sinav2.value) + parseFloat(performans1.value) + parseFloat(performans2.value)) / 4}</div>
+                                                                                                    </div>`
+                                    } else if (sinav1.value !== "" && sinav2.value !== "" && performans1.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${parseFloat(sinav1.value) + parseFloat(sinav2.value)}</div><div><b>Performans Puan Ortalaması:</b> ${performans1.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(sinav2.value) + parseFloat(performans1.value)) / 3}</div></div>`
+                                    } else if (sinav1.value !== "" && uygulama1.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${sinav1.value}</div><div><b>Uygulama Puanı Ortalaması:</b> ${uygulama1.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(uygulama1.value)) / 2}</div></div>`
+                                    } else if (sinav1.value !== "" && performans1.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${sinav1.value}</div><div><b>Performans Puan Ortalaması:</b> ${performans1.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(performans1.value)) / 2}</div></div>`
+                                    } else if (sinav1.value !== "" && sinav2.value !== "") {
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3><div style="display:flex; row-gap:5px;flex-direction: inherit;"><div><b>Yazılı Sınav Ortalaması: </b>${sinav1.value}</div><div><b>Dersin Dönem Puanı: </b>${(parseFloat(sinav1.value) + parseFloat(sinav2.value)) / 2}</div></div>`
+                                    } else {
+                                        alert('Hata oluştu.')
                                     }
                                 })
-                            }
-
-
-                            
+                            } 
                             
                             else if (secilenAltBaslik == "Aşı Takvimi") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı10:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Gebelik Hesaplama Aracı") {
+                            } 
+                            
+                            
+                            else if (secilenAltBaslik == "Gebelik Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı11:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Günlük Su İhtiyacı Hesaplama Aracı") {
@@ -503,7 +507,10 @@ fetch('baslik.json')
                             } else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı13:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
+                            } 
+                            
+                            
+                            else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı14:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "İnç Hesaplama Aracı") {
