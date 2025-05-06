@@ -490,26 +490,99 @@ fetch('baslik.json')
                                         alert('Hata oluştu.')
                                     }
                                 })
-                            } 
-                            
+                            }
+
                             else if (secilenAltBaslik == "Aşı Takvimi") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı10:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } 
-                            
-                            
-                            else if (secilenAltBaslik == "Gebelik Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı11:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Günlük Su İhtiyacı Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı12:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Hesaplaması</h3><form style="display:flex; flex-direction:column;"><input type="date" name="" id="girilenTarih" style="width:160px; padding:0px;"><input type="submit" value="Hesapla" id="asiHesapla" style="width:33%;margin-top:5px;"></form>`
+
+                                let girilenTarih = document.querySelector('#girilenTarih')
+                                let asiHesapla = document.querySelector('#asiHesapla')
+
+                                asiHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    // Kullanıcıdan tarih al (örnek format: "2025-05-06")
+                                    let tarihStr = girilenTarih.value
+                                    let tarih = new Date(tarihStr)
+                                    // 30 gün ekle
+                                    tarih.setDate(tarih.getDate() + 60)
+                                    // Yeni tarihi yazdır
+                                    let yeniTarihStr = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 60)
+                                    let yeniTarihStr2 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 60)
+                                    let yeniTarihStr3 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 90)
+                                    let yeniTarihStr4 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 90)
+                                    let yeniTarihStr5 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 180)
+                                    let yeniTarihStr6 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 180)
+                                    let yeniTarihStr7 = tarih.toISOString().split('T')[0];
+
+                                    tarih.setDate(tarih.getDate() + 365)
+                                    let yeniTarihStr8 = tarih.toISOString().split('T')[0];
+
+
+                                    hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Hesaplaması Sonuçları</h3>
+                                    <div><b>Girilen Tarih: </b>${tarihStr}</div>
+                                    <div><b>${tarihStr}(Doğumda): </b>Hepatit-B 1. Aşı</div>
+                                    <div><b>${yeniTarihStr}(2.Ay Sonunda):</b> BCG 1. Aşı, DaBT-İPA-Hib-HepB 1. Aşı, KPA 1. Aşı</div>
+                                    <div><b>${yeniTarihStr2}(4.Ay Sonunda):</b> DaBT-İPA-Hib-HepB 2. Aşı, KPA 2. Aşı</div>
+                                    <div><b>${yeniTarihStr3}(6.Ay Sonunda):</b> DaBT-İPA-Hib-HepB 3. Aşı, OPA 1. Aşı</div>
+                                    <div><b>${yeniTarihStr4}(9.Ay Sonunda):</b> KKK Ek Doz</div>
+                                    <div><b>${yeniTarihStr5}(12.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
+                                    <div><b>${yeniTarihStr6}(18.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
+                                    <div><b>${yeniTarihStr7}(24.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
+                                    <div><b>${yeniTarihStr8}(48.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
+                                    `
+
+                                })
+                            }
+
+
+                            else if (secilenAltBaslik == "Günlük Su İhtiyacı Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `<div>
+                                <form>
+                                    <div>
+                                    <b>Kilonuz: </b><input type="text" name="" id="dmGiris">
+                                        <div id="radioChange">
+                                            <div><b>Kadın</b><input type="radio" name="cinsiyet" id="kadın" value="kadın"></div>
+                                            <div><b>Erkek</b><input type="radio" name="cinsiyet" id="erkek" value="erkek"></div>
+                                        </div>
+                                        <select name="" id="" style="width:35%">
+                                            <option value="">Seçiniz</option>
+                                            <option value="az">Masa başı bir işte çalışıyorum, fazla hareket etmiyorum</option>
+                                            <option value="biraz">Az hareket ettiğim bir iş yapıyorum, hafif egzersizler yapıyorum</option>
+                                            <option value="orta">Orta derecede hareket gerektiren bir iş yapıyorum</option>
+                                            <option value="ortaCok">Çok aktif olduğum bir iş yapıyorum, her gün spor yapıyorum</option>
+                                            <option value="yuksek">Aşırı düzeyde spor yapıyorum, spor müsabakasına hazırlanıyorum</option>
+                                        </select>
+                                        <input type="submit" value="Hesapla" id="suİhtiyaciHesapla">
+                                    </div>
+                                    </div>
+                                </form>
+                                `
+
+                                
+                            }
+
+
+
+                            else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı13:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } 
-                            
-                            
+                            }
+
+
                             else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı14:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
