@@ -530,7 +530,6 @@ fetch('baslik.json')
                                     tarih.setDate(tarih.getDate() + 365)
                                     let yeniTarihStr8 = tarih.toISOString().split('T')[0];
 
-
                                     hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Hesaplaması Sonuçları</h3>
                                     <div><b>Girilen Tarih: </b>${tarihStr}</div>
                                     <div><b>${tarihStr}(Doğumda): </b>Hepatit-B 1. Aşı</div>
@@ -543,44 +542,110 @@ fetch('baslik.json')
                                     <div><b>${yeniTarihStr7}(24.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
                                     <div><b>${yeniTarihStr8}(48.Ay Sonunda):</b> KPA Pekiştirme Aşısı, KKK 1. Aşı, Su Çiçeği Aşısı</div>
                                     `
+                                })
+                            } else if (secilenAltBaslik == "Günlük Su İhtiyacı Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `<h3>${secilenAltBaslik}</h3>
+                                                        <form>
+                                                            <div style="text-align: start;width: 300px;">
+                                                                    <div style="padding-left: 50px; margin-bottom:10px;"><b>Kilonuz: </b><input type="text" name="" id="kiloGiris" style="width:54%"></div>
+                                                                    <div><b>Aktivite Biçimi:</b>
+                                                                        <select id="efor" style="width:50%">
+                                                                            <option value="0.025">Masa başı bir işte çalışıyorum, fazla hareket etmiyorum</option>
+                                                                            <option value="0.026">Az hareket ettiğim bir iş yapıyorum, hafif egzersizler yapıyorum</option>
+                                                                            <option value="0.027">Orta derecede hareket gerektiren bir iş yapıyorum</option>
+                                                                            <option value="0.028">Çok aktif olduğum bir iş yapıyorum, her gün spor yapıyorum</option>
+                                                                            <option value="0.029">Aşırı düzeyde spor yapıyorum, spor müsabakasına hazırlanıyorum</option>
+                                                                        </select>
+                                                                    </div>
+                                                            </div>
+                                                                <div id="radioChange" style="display: flex;flex-direction: column;row-gap: 10px;">
+                                                                    <div><b>Kadın</b><input type="radio" name="cinsiyet" id="kadin" value="kadin"></div>
+                                                                    <div><b>Erkek</b><input type="radio" name="cinsiyet" id="erkek" value="erkek"></div>
+                                                                </div><br>
+                                                                <div style="margin-left:20px;"><input type="submit" value="Hesapla" id="suIhtiyaciHesapla" style="height:50px;"></div>
+                                                        </form>
+                                                            
+                                                            `
+                                document.querySelector('#suIhtiyaciHesapla').addEventListener("click", function (e) {
+                                    e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
 
+                                    const kilo = parseFloat(document.querySelector('#kiloGiris').value);
+                                    const cinsiyet = document.querySelector('input[name="cinsiyet"]:checked');
+                                    const efor = document.querySelector('#efor').value;
+
+                                    if (!kilo || !cinsiyet) {
+                                        alert("Lütfen kilo ve cinsiyet bilgilerinizi girin.");
+                                        return;
+                                    }
+                                    let katsayi;
+                                    // Kadın ve erkek için farklı katsayılarla çarp
+                                    if (cinsiyet.value === "kadin") {
+                                        katsayi = parseFloat(efor); // kadınlar için doğrudan efor değeri
+                                    } else if (cinsiyet.value === "erkek") {
+                                        // erkekler için efor katsayısına +0.005 ekle
+                                        katsayi = parseFloat(efor) + 0.005;
+                                    }
+                                    const suIhtiyaci = kilo * katsayi * 1000; // sonuç ml cinsinden
+
+                                    hesaplaPop.innerHTML = `<h3 style="margin-top:-6px;">${secilenAltBaslik} Sonuçları</h3>
+                                    <div style="margin-bottom:5px;"><b>Günlük Su İhtiyacınız: </b> ${Math.round(suIhtiyaci)} ml.dir</div>
+                                    <div><b>Kaç Bardak: </b> ${Math.round(suIhtiyaci) / 250} Bardak(250ml'lik)</div>
+                                    <div><b>NOT: </b>Burada belirtilen günlük su ihtiyacınızın bir kısmını yemeklerden alıyorsunuz. Bu nedenle burada belirtilenden daha az miktarda su içmeniz yeterli olacaktır.</div>
+                                    <div><b>Uyandıktan Sonra: </b>2 bardak su içmek iç organlarınızı aktifleştirerek güne hazırlar.</div>
+                                    <div><b>Yemekten 30 Dakika Önce: </b>1 bardak su içmek hem sindirim sisteminizi harekete geçirir hem de yemeklerde daha az kalori tüketerek kilo vermenizi sağlar.</div>
+                                    <div><b>Banyodan Önce: </b>1 bardak su içmek kan basıncınızı düşürmeye yardımcı olur.</div>
+                                    <div><b>Uyumadan Önce: </b>1 bardak su içmek ise kalp krizi ve inme riskini azaltır.</div>
+                                    `
                                 })
                             }
 
 
-                            else if (secilenAltBaslik == "Günlük Su İhtiyacı Hesaplama Aracı") {
-                                hesaplaPop.style = "display:flex;"
-                                hesaplaPop.innerHTML = `<div>
-                                <form>
-                                    <div>
-                                    <b>Kilonuz: </b><input type="text" name="" id="dmGiris">
-                                        <div id="radioChange">
-                                            <div><b>Kadın</b><input type="radio" name="cinsiyet" id="kadın" value="kadın"></div>
-                                            <div><b>Erkek</b><input type="radio" name="cinsiyet" id="erkek" value="erkek"></div>
-                                        </div>
-                                        <select name="" id="" style="width:35%">
-                                            <option value="">Seçiniz</option>
-                                            <option value="az">Masa başı bir işte çalışıyorum, fazla hareket etmiyorum</option>
-                                            <option value="biraz">Az hareket ettiğim bir iş yapıyorum, hafif egzersizler yapıyorum</option>
-                                            <option value="orta">Orta derecede hareket gerektiren bir iş yapıyorum</option>
-                                            <option value="ortaCok">Çok aktif olduğum bir iş yapıyorum, her gün spor yapıyorum</option>
-                                            <option value="yuksek">Aşırı düzeyde spor yapıyorum, spor müsabakasına hazırlanıyorum</option>
-                                        </select>
-                                        <input type="submit" value="Hesapla" id="suİhtiyaciHesapla">
-                                    </div>
-                                    </div>
-                                </form>
-                                `
-
-                                
-                            }
 
 
 
                             else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı13:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <form style="flex-direction:column;row-gap: 12px;">
+                                                                <div>
+                                                                    <div style="margin-top: 7px;">
+                                                                        <b>Hesaplama Şeklini Seçiniz</b>
+                                                                        <div><b>Günlük içilen sigara adedi (dal) ile</b><input type="radio" name="sigara" id="dal" value="dal"></div>
+                                                                        <div><b>Günlük içilen paket miktarı ile</b><input type="radio" name="sigara" id="paket" value="paket"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <b>Başlama Tarihi:</b>
+                                                                    <select name="" id="ay">
+                                                                        <option value=""></option>
+                                                                    </select>
+                                                                    <select name="" id="yil">
+                                                                        <option value=""></option>
+                                                                    </select>
+                                                                </div>
+                                                                <div style="display: none;">
+                                                                    <b>Günlük Dal Adeti</b>
+                                                                    <input type="text" name="" id="dalAdet">
+                                                                </div>
+                                                                <div style="display: none;">
+                                                                    <b>Günlük Paket Adedi:</b>
+                                                                    <select name="" id="paketAdet">
+                                                                        <option value=""></option>
+                                                                    </select>
+                                                                </div>
+                                                                <div>
+                                                                    <b>Güncel Paket Fiyatı:</b>
+                                                                    <input type="text" name="" id="fiyat">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        `
                             }
+
+
 
 
                             else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
