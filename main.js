@@ -565,7 +565,6 @@ fetch('baslik.json')
                                                                 </div><br>
                                                                 <div style="margin-left:20px;"><input type="submit" value="Hesapla" id="suIhtiyaciHesapla" style="height:50px;"></div>
                                                         </form>
-                                                            
                                                             `
                                 document.querySelector('#suIhtiyaciHesapla').addEventListener("click", function (e) {
                                     e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
@@ -598,13 +597,7 @@ fetch('baslik.json')
                                     <div><b>Uyumadan Önce: </b>1 bardak su içmek ise kalp krizi ve inme riskini azaltır.</div>
                                     `
                                 })
-                            }
-
-
-
-
-
-                            else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
+                            } else if (secilenAltBaslik == "Sigara Maliyeti Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;"
                                 hesaplaPop.innerHTML = `
                                                         <div>
@@ -619,39 +612,166 @@ fetch('baslik.json')
                                                                 </div>
                                                                 <div>
                                                                     <b>Başlama Tarihi:</b>
-                                                                    <select name="" id="ay">
-                                                                        <option value=""></option>
-                                                                    </select>
-                                                                    <select name="" id="yil">
-                                                                        <option value=""></option>
-                                                                    </select>
+                                                                    <input type="date" name="" id="ayYilGun">
                                                                 </div>
-                                                                <div style="display: none;">
+                                                                <div id="dalDiv" style="display: none;">
                                                                     <b>Günlük Dal Adeti</b>
                                                                     <input type="text" name="" id="dalAdet">
                                                                 </div>
-                                                                <div style="display: none;">
-                                                                    <b>Günlük Paket Adedi:</b>
+                                                                <div id="paketDiv" style="display: none;">
+                                                                    <b>Günlük Paket Adeti:</b>
                                                                     <select name="" id="paketAdet">
-                                                                        <option value=""></option>
+                                                                        <option value="0.5">Yarım Paket</option>
+                                                                        <option value="1">1 Paket</option>
+                                                                        <option value="1.5">1,5 Paket</option>
+                                                                        <option value="2">2 Paket</option>
+                                                                        <option value="2.5">2,5 Paket</option>
+                                                                        <option value="3">3 Paket</option>
+                                                                        <option value="3.5">3,5 Paket</option>
+                                                                        <option value="4">4 Paket</option>
+                                                                        <option value="4.5">4,5 Paket</option>
+                                                                        <option value="5">5 Paket</option>
+                                                                        <option value="5.5">5,5 Paket</option>
+                                                                        <option value="6">6 Paket</option>
                                                                     </select>
                                                                 </div>
                                                                 <div>
                                                                     <b>Güncel Paket Fiyatı:</b>
                                                                     <input type="text" name="" id="fiyat">
                                                                 </div>
+                                                                <div style="margin-left:20px;"><input type="submit" value="Hesapla" id="sigaraMaliyetHesapla" style="height:50px;"></div>
                                                             </form>
                                                         </div>
                                                         `
+                                
+                                let dal = document.querySelector('#dal')
+                                let paket = document.querySelector('#paket')
+                                let dalDiv = document.querySelector('#dalDiv')
+                                let paketDiv = document.querySelector('#paketDiv')
+                                let ayYilGun = document.querySelector('#ayYilGun')
+                                let dalAdet = document.querySelector('#dalAdet')
+                                let paketAdet = document.querySelector('#paketAdet')
+                                let fiyat = document.querySelector('#fiyat')
+                                let sigaraMaliyetHesapla = document.querySelector('#sigaraMaliyetHesapla')
+
+                                // Radio Check
+                                function radioSelect() {
+                                    if (dal.checked) {
+                                        dalDiv.style.display = "flex";
+                                        paketDiv.style.display = "none";
+                                    } else if (paket.checked) {
+                                        dalDiv.style.display = "none";
+                                        paketDiv.style.display = "flex";
+                                    }
+                                }
+                                dal.addEventListener("change", radioSelect);
+                                paket.addEventListener("change", radioSelect);
+
+                                sigaraMaliyetHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+
+                                    // Hesaplanacak alanlardaki veriler değişkenlere atandı.
+                                    let hesaplanacakTarih = new Date(ayYilGun.value)
+                                    let bugun = new Date()
+
+                                    // Saatler önemli olamadığı için sıfırlanıyor.
+                                    hesaplanacakTarih.setHours(0, 0, 0, 0)
+                                    bugun.setHours(0, 0, 0, 0)
+
+                                    // Önce ms olarak fark bulunup sonra güne çevrildi.
+                                    let farkMs = bugun - hesaplanacakTarih
+                                    let farkGun = Math.round(farkMs / (1000 * 60 * 60 * 24))
+
+                                    // dal hesabına göre adet tutarı ve girilen veriye göre hesap
+                                    let adetTutari = fiyat.value / 20
+                                    let dalMaliyet = (adetTutari * dalAdet.value) * farkGun
+                                    // paket hesabına göre adet tutarı
+                                    let paketAdetTutari = fiyat.value * paketAdet.value
+
+                                    let toplamDal = farkGun * dalAdet.value
+                                    let toplamPaket = toplamDal / 20
+                                    let toplamMaliyet = toplamPaket * fiyat.value
+
+                                    // Zaman Hesapları
+                                    let kayıpZaman = toplamDal * 11
+                                    let gunHesabı = kayıpZaman / 1440
+                                    let saatHesabı = (kayıpZaman % 1440) / 60
+                                    let dakikaHesabı = kayıpZaman % 60
+
+                                    let paketDal = (paketAdet.value * 20) * farkGun
+                                    let paketP = ((paketAdet.value * 20) * farkGun) / 20
+                                    let toplamPaketM = paketP * fiyat.value
+
+                                    let kayipZamanP = paketDal * 11
+                                    let gunHesabıP = kayipZamanP / 1440
+                                    let saatHesabıP = (kayipZamanP % 1440) / 60
+                                    let dakikaHesabıP = kayipZamanP % 60
+                                    if (dal.checked) {
+                                        hesaplaPop.innerHTML = `
+                                        <div style="margin: 0px 10px;display: flex;flex-direction: column;row-gap: 5px;">
+                                        <h3>${secilenAltBaslik} Sonucu</h3>
+                                            <div><b>İçilen Toplam Sigara:</b> ${toplamDal} adet (${toplamPaket} paket)<br></div>
+                                            <div><b>Sigaraya Harcanan Toplam Para:</b> ${toplamMaliyet} TL<br></div>
+                                            <div><b>Yaşam Süresine Etkisi:</b> Yapılan araştırmalara göre içilen her 1 adet (dal) sigara insan ömrünü ortalama olarak 11 dakika kısaltmaktadır. Buna göre ${toplamPaket} paket sigara içen bir kişinin ömrü ortalama olarak ${kayıpZaman} dakika (${Math.floor(gunHesabı)} gün, ${Math.floor(saatHesabı)} saat, ${dakikaHesabı} dakika) kısalmıştır.<br></div>
+                                            <div><b>Sigara Sağlığa Zararlıdır!</b> Sigarayı bırakmak için Sağlık Bakanlığı'nın ALO 171 Sigara Bırakma Danışma Hattı'nı hemen arayabilirsiniz.<br></div>
+                                        </div>
+                                        `
+                                    } else if (paket.checked) {
+                                        hesaplaPop.innerHTML = `
+                                        <div style="margin: 0px 10px;display: flex;flex-direction: column;row-gap: 5px;">
+                                        <h3>${secilenAltBaslik} Sonucu</h3>
+                                            <div><b>İçilen Toplam Sigara:</b> ${paketDal} adet (${paketP} paket)<br></div>
+                                            <div><b>Sigaraya Harcanan Toplam Para:</b> ${toplamPaketM} TL<br></div>
+                                            <div><b>Yaşam Süresine Etkisi:</b> Yapılan araştırmalara göre içilen her 1 adet (dal) sigara insan ömrünü ortalama olarak 11 dakika kısaltmaktadır. Buna göre ${paketP} paket sigara içen bir kişinin ömrü ortalama olarak ${kayipZamanP} dakika (${Math.floor(gunHesabıP)} gün, ${Math.floor(saatHesabıP)} saat, ${dakikaHesabıP} dakika) kısalmıştır.<br></div>
+                                            <div><b>Sigara Sağlığa Zararlıdır!</b> Sigarayı bırakmak için Sağlık Bakanlığı'nın ALO 171 Sigara Bırakma Danışma Hattı'nı hemen arayabilirsiniz.<br></div>
+                                        </div>
+                                        `
+                                    }
+                                })
                             }
 
 
 
 
                             else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı14:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "İnç Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                <div>
+                                                    <h3>${secilenAltBaslik}</h3>
+                                                    <form style="flex-direction:column; row-gap:10px;">
+                                                        <div style="display: flex;flex-direction: row;column-gap: 5px;" id="sekillerDiv">
+                                                            <b>Şekil: </b>
+                                                            <div style="display: flex;align-items: center;">Dikdörtgen(Kare)<input type="radio" name="sekil" id="kare"></div>
+                                                            <div style="display: flex;align-items: center;">Üçgen<input type="radio" name="sekil" id="ucgen"></div>
+                                                            <div style="display: flex;align-items: center;">Daire(Çember)<input type="radio" name="sekil" id="daire"></div>
+                                                        </div>
+                                                        <div>
+                                                            <b>Taban (a):</b><input type="text" name="" id="taban" style="margin-left: 30px;">
+                                                        </div>
+                                                        <div>
+                                                            <b>Yükseklik (h):</b><input type="text" name="" id="yukseklik">
+                                                        </div>
+                                                        <div style="display: none;">
+                                                            <b>Yarıçap (r):</b><input type="text" name="" id="yaricap">
+                                                        </div>
+                                                        <input type="submit" value="Hesapla" id="alanHesapla">
+                                                    </form>
+                                                </div >
+                                                `
+
+                            let sekillerDiv = document.querySelector('#sekillerDiv')
+                            let kare = document.querySelector('#kare')
+                            let ucgen = document.querySelector('#ucgen')
+                            let daire = document.querySelector('#daire')
+                            let taban = document.querySelector('#taban')
+                            let yukseklik = document.querySelector('#yukseklik')
+                            let yaricap = document.querySelector('#yaricap')
+                            let alanHesapla = document.querySelector('#alanHesapla')
+
+                            }
+
+
+                            else if (secilenAltBaslik == "İnç Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı15:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Çevre Hesaplama Aracı") {
