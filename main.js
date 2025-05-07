@@ -643,7 +643,7 @@ fetch('baslik.json')
                                                             </form>
                                                         </div>
                                                         `
-                                
+
                                 let dal = document.querySelector('#dal')
                                 let paket = document.querySelector('#paket')
                                 let dalDiv = document.querySelector('#dalDiv')
@@ -728,12 +728,7 @@ fetch('baslik.json')
                                         `
                                     }
                                 })
-                            }
-
-
-
-
-                            else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
+                            } else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;"
                                 hesaplaPop.innerHTML = `
                                                 <div>
@@ -745,29 +740,85 @@ fetch('baslik.json')
                                                             <div style="display: flex;align-items: center;">Üçgen<input type="radio" name="sekil" id="ucgen"></div>
                                                             <div style="display: flex;align-items: center;">Daire(Çember)<input type="radio" name="sekil" id="daire"></div>
                                                         </div>
-                                                        <div>
-                                                            <b>Taban (a):</b><input type="text" name="" id="taban" style="margin-left: 30px;">
+                                                        <div id="boxDiv" style="width: 400px;margin-right: 27px;">
+                                                            <div>
+                                                                <b>Taban (a):</b><input type="text" name="" id="taban" style="margin-left: 27px;">
+                                                            </div>
+                                                            <div>
+                                                                <b>Yükseklik (h):</b><input type="text" name="" id="yukseklik">
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <b>Yükseklik (h):</b><input type="text" name="" id="yukseklik">
-                                                        </div>
-                                                        <div style="display: none;">
+                                                        <div id="capDiv" style="display: none;">
                                                             <b>Yarıçap (r):</b><input type="text" name="" id="yaricap">
                                                         </div>
                                                         <input type="submit" value="Hesapla" id="alanHesapla">
                                                     </form>
                                                 </div >
                                                 `
+                                let sekilCheck = document.querySelector('input[name="sekil"]:checked')
+                                let sekillerDiv = document.querySelector('#sekillerDiv')
+                                let kare = document.querySelector('#kare')
+                                let ucgen = document.querySelector('#ucgen')
+                                let daire = document.querySelector('#daire')
+                                let boxDiv = document.querySelector('#boxDiv')
+                                let capDiv = document.querySelector('#capDiv')
+                                let taban = document.querySelector('#taban')
+                                let yukseklik = document.querySelector('#yukseklik')
+                                let yaricap = document.querySelector('#yaricap')
+                                let alanHesapla = document.querySelector('#alanHesapla')
 
-                            let sekillerDiv = document.querySelector('#sekillerDiv')
-                            let kare = document.querySelector('#kare')
-                            let ucgen = document.querySelector('#ucgen')
-                            let daire = document.querySelector('#daire')
-                            let taban = document.querySelector('#taban')
-                            let yukseklik = document.querySelector('#yukseklik')
-                            let yaricap = document.querySelector('#yaricap')
-                            let alanHesapla = document.querySelector('#alanHesapla')
+                                function sekilRadioCheck() {
+                                    if (kare.checked || ucgen.checked) {
+                                        boxDiv.style.display = "flex";
+                                        capDiv.style.display = "none";
+                                    } else if (daire.checked) {
+                                        boxDiv.style.display = "none";
+                                        capDiv.style.display = "flex";
+                                    }
+                                }
+                                kare.addEventListener("change", sekilRadioCheck);
+                                ucgen.addEventListener("change", sekilRadioCheck);
+                                daire.addEventListener("change", sekilRadioCheck);
 
+                                if (kare.checked) {
+                                    boxDiv.style = "display:flex;"
+                                    capDiv.style = "display:none;"
+                                } else if (ucgen.checked) {
+                                    boxDiv.style = "display:flex;"
+                                    capDiv.style = "display:none;"
+                                } else if (daire.checked) {
+                                    boxDiv.style = "display:none;"
+                                    capDiv.style = "display:flex;"
+                                }
+
+                                alanHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+
+                                    if (kare.checked) {
+                                        let kareSonuccm = taban.value * yukseklik.value
+                                        let kareSonucm = (taban.value * yukseklik.value) / 10000
+
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                        ${kareSonucm} metrekaredir = ${kareSonuccm}santimetrekare
+
+                                        `
+                                    } else if (ucgen.checked) {
+                                        let ucgenSonuccm = ((taban.value * yukseklik.value) / 2) / 10000
+                                        let ucgenSonucm = (taban.value * yukseklik.value) / 2
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                        ${ucgenSonuccm} metrekaredir = ${ucgenSonucm}santimetrekare
+                                        `
+                                    } else if (daire.checked) {
+                                        let pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
+                                        let daireSonuccm = (yaricap.value * yaricap.value) * pi
+                                        let daireSonucm = (pi * (yaricap.value * yaricap.value)) / 10000
+                                        hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                        ${daireSonucm} metrekaredir = ${daireSonuccm}santimetrekare
+                                        `
+                                    } else if (taban.value == '' || yukseklik.value == '' || yaricap.value == '') {
+                                        alert('Tüm alanlar dolu olmalı.')
+                                    }
+                                })
                             }
 
 
