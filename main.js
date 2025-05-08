@@ -853,13 +853,7 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
-                            }
-
-
-
-
-
-                            else if (secilenAltBaslik == "Çevre Hesaplama Aracı") {
+                            } else if (secilenAltBaslik == "Çevre Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;"
                                 hesaplaPop.innerHTML = `
                                                     <form style="display:flex; flex-direction:column; row-gap:15px;">
@@ -940,24 +934,146 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
+                            } else if (secilenAltBaslik == "Mil Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                <form style="flex-direction:column; row-gap:10px;">
+                                <h3>${secilenAltBaslik}</h3>
+                                    <div style="display:flex; column-gap:10px;">
+                                        <b>İşlem: </b>
+                                        <div id=radioDeger>
+                                            <div style="display:flex; align-items:center; margin-bottom:5px;"><label for="milDeger">Mil kaç km</label><input type="radio" name="milKm" id="milDeger"></div>
+                                            <div style="display:flex; align-items:center;"><label for="kmDeger">Km kaç mil</label><input type="radio" name="milKm" id="kmDeger"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <b>Uzunluk: </b>
+                                        <input type="text" name="" id="uzunlukM">
+                                    </div>
+                                    <input type="submit" value="Hesapla" id="milKmHesapla">
+                                </form>
+                                    `
+                                let milDeger = document.querySelector('#milDeger')
+                                let kmDeger = document.querySelector('#kmDeger')
+                                let uzunlukM = document.querySelector('#uzunlukM')
+                                let milKmHesapla = document.querySelector('#milKmHesapla')
+                                let radioDeger = document.querySelector('#radioDeger')
+
+                                milKmHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+
+                                    if (radioDeger.value !== '' && uzunlukM.value !== '') {
+                                        if (milDeger.checked) {
+                                            let deger = uzunlukM.value * 1.609
+                                            hesaplaPop.innerHTML = `
+                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                            ${uzunlukM.value} mil ${deger} kilometre'dir`
+                                        } else if (kmDeger.checked) {
+                                            let deger = uzunlukM.value * 0.621
+                                            hesaplaPop.innerHTML = `
+                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                            ${uzunlukM.value} km ${deger} mil'dir`
+                                        }
+                                    }
+                                })
+                            }else if (secilenAltBaslik == "Yüzde Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <form style="flex-direction: column; row-gap:10px;">
+                                                            <div style="display: flex;margin-left: 20px;">
+                                                                <b>İşlem: </b>
+                                                                <select name="" id="yuzdeSecim" style="text-align: center;">
+                                                                    <option value="">Seçiniz</option><hr>
+                                                                    <option value="A">A sayısının %B'si kaçtır?</option><hr>
+                                                                    <option value="B">A sayısı, B sayısının yüzde kaçıdır?</option><hr>
+                                                                    <option value="C">A sayısından B sayısına değişim oranı yüzde kaçtır?</option><hr>
+                                                                    <option value="D">A sayısı, %B kadar artırılırsa kaç olur?</option><hr>
+                                                                    <option value="E">A sayısı, %B kadar azaltılırsa kaç olur?</option>
+                                                                </select>
+                                                            </div>
+                                                            <div><b>A Sayısı: </b><input type="text" name="" id="aSayisi"></div>
+                                                            <div><b>B Sayısı: </b><input type="text" name="" id="bSayisi"></div>
+                                                            <div><input type="submit" value="Hesapla" id="yuzdeHesapla"></div>
+                                                        </form>
+                                                        `
+                                let yuzdeSecim = document.querySelector('#yuzdeSecim')
+                                let aSayisi = document.querySelector('#aSayisi')
+                                let bSayisi = document.querySelector('#bSayisi')
+                                let yuzdeHesapla = document.querySelector('#yuzdeHesapla')
+                                yuzdeSecim.addEventListener("change", function () {
+                                    event.preventDefault()
+                                    let yuzdeSec = yuzdeSecim.value;
+                                    console.log(yuzdeSec)
+                                })
+                                 yuzdeHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (yuzdeSecim.value == '' || aSayisi.value == '' || bSayisi.value == '') {
+                                        alert('Tüm alanların dolu olması gerek.')
+                                    } else {
+                                        if (yuzdeSecim.value == 'A') {
+                                            let aSonuc = (aSayisi.value / 100) * bSayisi.value
+                                            let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
+                                            <div>${aSayisi.value} sayısının %${bSayisi.value} oranı : ${aSonuc}</div>
+                                            `
+                                        } else if (yuzdeSecim.value == 'B') {
+                                            let aSonuc = (aSayisi.value / bSayisi.value) * 100
+                                            let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
+                                            <div>${aSayisi.value} sayısı ${bSayisi.value} sayısının : %${aSonuc} oranıdır</div>
+                                            `
+                                        } else if (yuzdeSecim.value == 'C') {
+                                            let aSonuc = ((bSayisi.value - aSayisi.value) / aSayisi.value  * 100)
+                                            let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
+                                            <div>${aSayisi.value} sayısından ${bSayisi.value} sayısına değişim : %${aSonuc} oranındadır</div>
+                                            `
+                                        } else if (yuzdeSecim.value == 'D') {
+                                            let aSonuc = aSayisi.value *(1+(bSayisi.value / 100))
+                                            let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
+                                            <div>${aSayisi.value} sayısı %${bSayisi.value} arttırılırsa : ${aSonuc} olur</div>
+                                            `
+                                        } else if (yuzdeSecim.value == 'E') {
+                                            let aSonuc = aSayisi.value *(1-(bSayisi.value / 100))
+                                            let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
+                                            <div>${aSayisi.value} sayısı %${bSayisi.value} azaltılırsa : ${aSonuc} olur</div>
+                                            `
+                                        }
+                                    }
+                                })
                             }
 
 
 
-
-
-
-
-                            else if (secilenAltBaslik == "Mil Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı17:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Yüzde Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı18:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "İhbar Tazminatı Hesaplama Aracı") {
+                            else if (secilenAltBaslik == "İhbar Tazminatı Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı19:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Maaş Hesaplamaları (Brüt-Net)") {
+                                let hesaplanacakTarih = new Date(ayYilGun.value)
+                                let bugun = new Date()
+
+                                // Saatler önemli olamadığı için sıfırlanıyor.
+                                hesaplanacakTarih.setHours(0, 0, 0, 0)
+                                bugun.setHours(0, 0, 0, 0)
+
+                                // Önce ms olarak fark bulunup sonra güne çevrildi.
+                                let farkMs = bugun - hesaplanacakTarih
+                                let farkGun = Math.round(farkMs / (1000 * 60 * 60 * 24))
+                            } 
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            else if (secilenAltBaslik == "Maaş Hesaplamaları (Brüt-Net)") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı20:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Yıllık İzin Hesaplama Aracı") {
