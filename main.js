@@ -682,12 +682,6 @@ fetch('baslik.json')
                                     let farkMs = bugun - hesaplanacakTarih
                                     let farkGun = Math.round(farkMs / (1000 * 60 * 60 * 24))
 
-                                    // dal hesabına göre adet tutarı ve girilen veriye göre hesap
-                                    let adetTutari = fiyat.value / 20
-                                    let dalMaliyet = (adetTutari * dalAdet.value) * farkGun
-                                    // paket hesabına göre adet tutarı
-                                    let paketAdetTutari = fiyat.value * paketAdet.value
-
                                     let toplamDal = farkGun * dalAdet.value
                                     let toplamPaket = toplamDal / 20
                                     let toplamMaliyet = toplamPaket * fiyat.value
@@ -706,7 +700,7 @@ fetch('baslik.json')
                                     let gunHesabıP = kayipZamanP / 1440
                                     let saatHesabıP = (kayipZamanP % 1440) / 60
                                     let dakikaHesabıP = kayipZamanP % 60
-                                    if (dal.checked) {
+                                    if (dal.checked && fiyat.value !== '' && dalAdet.value !== '') {
                                         hesaplaPop.innerHTML = `
                                         <div style="margin: 0px 10px;display: flex;flex-direction: column;row-gap: 5px;">
                                         <h3>${secilenAltBaslik} Sonucu</h3>
@@ -716,7 +710,7 @@ fetch('baslik.json')
                                             <div><b>Sigara Sağlığa Zararlıdır!</b> Sigarayı bırakmak için Sağlık Bakanlığı'nın ALO 171 Sigara Bırakma Danışma Hattı'nı hemen arayabilirsiniz.<br></div>
                                         </div>
                                         `
-                                    } else if (paket.checked) {
+                                    } else if (paket.checked && fiyat.value !== '' && paketAdet.value !== '') {
                                         hesaplaPop.innerHTML = `
                                         <div style="margin: 0px 10px;display: flex;flex-direction: column;row-gap: 5px;">
                                         <h3>${secilenAltBaslik} Sonucu</h3>
@@ -726,6 +720,8 @@ fetch('baslik.json')
                                             <div><b>Sigara Sağlığa Zararlıdır!</b> Sigarayı bırakmak için Sağlık Bakanlığı'nın ALO 171 Sigara Bırakma Danışma Hattı'nı hemen arayabilirsiniz.<br></div>
                                         </div>
                                         `
+                                    } else {
+                                        alert('Tüm alanların dolu olduğuna emin olunuz.')
                                     }
                                 })
                             } else if (secilenAltBaslik == "Alan Hesaplama Aracı") {
@@ -736,9 +732,9 @@ fetch('baslik.json')
                                                     <form style="flex-direction:column; row-gap:10px;">
                                                         <div style="display: flex;flex-direction: row;column-gap: 5px;" id="sekillerDiv">
                                                             <b>Şekil: </b>
-                                                            <div style="display: flex;align-items: center;">Dikdörtgen(Kare)<input type="radio" name="sekil" id="kare"></div>
-                                                            <div style="display: flex;align-items: center;">Üçgen<input type="radio" name="sekil" id="ucgen"></div>
-                                                            <div style="display: flex;align-items: center;">Daire(Çember)<input type="radio" name="sekil" id="daire"></div>
+                                                            <div style="display: flex;align-items: center;"><label for="kare">Dikdörtgen(Kare)</label><input type="radio" name="sekil" id="kare"></div>
+                                                            <div style="display: flex;align-items: center;"><label for="ucgen">Üçgen</label><input type="radio" name="sekil" id="ucgen"></div>
+                                                            <div style="display: flex;align-items: center;"><label for="daire">Daire(Çember)</label><input type="radio" name="sekil" id="daire"></div>
                                                         </div>
                                                         <div id="boxDiv" style="width: 400px;margin-right: 27px;">
                                                             <div>
@@ -755,8 +751,6 @@ fetch('baslik.json')
                                                     </form>
                                                 </div >
                                                 `
-                                let sekilCheck = document.querySelector('input[name="sekil"]:checked')
-                                let sekillerDiv = document.querySelector('#sekillerDiv')
                                 let kare = document.querySelector('#kare')
                                 let ucgen = document.querySelector('#ucgen')
                                 let daire = document.querySelector('#daire')
@@ -823,12 +817,138 @@ fetch('baslik.json')
 
 
                             else if (secilenAltBaslik == "İnç Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı15:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Çevre Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı16:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Mil Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <form style="flex-direction:column; row-gap:10px;">
+                                                        <div style="display:flex; column-gap:10px;">
+                                                            <b>İşlem: </b>
+                                                            <div id=radioBox>
+                                                                <div style="display:flex; align-items:center; margin-bottom:5px;"><label for="incDeger">İnç kaç cm</label><input type="radio" name="deger" id="incDeger"></div>
+                                                                <div style="display:flex; align-items:center;"><label for="cmDeger">Cm kaç inç</label><input type="radio" name="deger" id="cmDeger"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <b>Uzunluk: </b>
+                                                            <input type="text" name="" id="uzunluk">
+                                                        </div>
+                                                        <input type="submit" value="Hesapla" id="incCmHesapla">
+                                                    </form>
+                                                        `
+                                let incDeger = document.querySelector('#incDeger')
+                                let cmDeger = document.querySelector('#cmDeger')
+                                let uzunluk = document.querySelector('#uzunluk')
+                                let incCmHesapla = document.querySelector('#incCmHesapla')
+                                let radioBox = document.querySelector('#radioBox')
+
+                                incCmHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+
+                                    if (radioBox.value !== '' && uzunluk.value !== '') {
+                                        if (incDeger.checked) {
+                                            let deger = uzunluk.value * 2.54
+                                            hesaplaPop.innerHTML = `${deger}`
+                                        } else if (cmDeger.checked) {
+                                            let deger = uzunluk.value * 0.3937
+                                            hesaplaPop.innerHTML = `${deger}`
+                                        }
+                                    }
+                                })
+                            }
+
+
+
+
+
+                            else if (secilenAltBaslik == "Çevre Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <form style="display:flex; flex-direction:column; row-gap:15px;">
+                                                    <h3>${secilenAltBaslik}</h3>
+                                                        <div style="display: flex;flex-direction:column; row-gap:10px; width: 370px;">
+                                                            <div style="text-align: end; padding-right: 4px;">
+                                                                <b>Şekil: </b>
+                                                                <select name="" id="sekilGeo">
+                                                                    <option value="es">Eşkenar Üçgen</option>
+                                                                    <option value="ikiz">İkizkenar Üçgen</option>
+                                                                    <option value="esdort">Eşkenar Dörtgen</option>
+                                                                    <option value="duzBes">Düzgün(Eşkenar) Beşgen</option>
+                                                                    <option value="duzAlt">Düzgün(Eşkenar) Altıgen</option>
+                                                                </select>
+                                                            </div>
+                                                            <div id="kenarBaslik">
+                                                                <b id="birKenarA">Bir Kenarın Uzunluğu (a): </b>
+                                                                <b id="ikizKenarB" style="display:none;">İkiz Kenar Uzunluğu (a): </b>
+                                                                <input type="text" name="" id="birKenar">
+                                                            </div>
+                                                            <div id="tabanB" style="display:none;justify-content: end; padding-right: 4px;">
+                                                                <b>Taban Genişliği (b): </b>
+                                                                <input type="text" name="" id="ikiKenar">
+                                                            </div>
+                                                        </div>
+                                                        <div><input type="submit" value="Hesapla" id="cevreHesapla" style="width:177px;"></div>
+                                                    </form>
+                                                    `
+                                let sekilGeo = document.querySelector('#sekilGeo')
+                                let tabanB = document.querySelector('#tabanB')
+                                let birKenar = document.querySelector('#birKenar')
+                                let ikiKenar = document.querySelector('#ikiKenar')
+                                let cevreHesapla = document.querySelector('#cevreHesapla')
+                                let birKenarA = document.querySelector('#birKenarA')
+                                let ikizKenarB = document.querySelector('#ikizKenarB')
+                                let kenarBaslik = document.querySelector('#kenarBaslik')
+                                sekilGeo.addEventListener("change", function () {
+                                    event.preventDefault()
+                                    let geoSekil = sekilGeo.value;
+                                    if (geoSekil == 'ikiz') {
+                                        kenarBaslik.style = "display: flex;justify-content: end;padding-right: 4px;"
+                                        tabanB.style = "display:flex;justify-content: end; padding-right: 4px;"
+                                        ikizKenarB.style = "display:flex;"
+                                        birKenarA.style = "display:none"
+                                    } else if (geoSekil !== 'ikiz') {
+                                        kenarBaslik.style = "display: flex;justify-content: end;padding-right: 4px;"
+                                        tabanB.style = "display:none;"
+                                        ikizKenarB.style = "display:none;"
+                                        birKenarA.style = "display:flex;"
+                                    }
+                                })
+                                cevreHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (sekilGeo.value == '' || birKenar.value == '') {
+                                        alert('Tüm alanların dolu olması gerekiyor.')
+                                    } else {
+                                        if (sekilGeo.value == 'es') {
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div><b>Hesaplamak İstediğiniz Eşkenar Üçgenin Çevresi: </b>${birKenar.value * birKenar.value} cm'dir</div>`
+                                        }
+                                        else if (sekilGeo.value == 'ikiz' || ikiKenar.value !== '') {
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div><b>Hesaplamak İstediğiniz İkizkenar Üçgenin Çevresi: </b>${(parseFloat(birKenar.value) + parseFloat(birKenar.value) + parseFloat(ikiKenar.value))} cm'dir</div>`
+                                        }
+                                        else if (sekilGeo.value == 'esdort') {
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div><b>Hesaplamak İstediğiniz Eşkenar Dikdörtgenin Çevresi: </b>${birKenar.value * 4} cm'dir</div>`
+                                        }
+                                        else if (sekilGeo.value == 'duzBes') {
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div><b>Hesaplamak İstediğiniz Düzgün (Eşkenar) Beşgenin Çevresi: </b>${birKenar.value * 5} cm'dir<7div>`
+                                        }
+                                        else if (sekilGeo.value == 'duzAlt') {
+                                            hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
+                                            <div><b>Hesaplamak İstediğiniz Düzgün (Eşkenar) Altıgenin Çevresi: </b>${birKenar.value * 6} cm'dir</div>`
+                                        } else {
+                                            alert('Hata oluştu')
+                                        }
+                                    }
+                                })
+                            }
+
+
+
+
+
+
+
+                            else if (secilenAltBaslik == "Mil Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı17:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Yüzde Hesaplama Aracı") {
