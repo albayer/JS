@@ -976,10 +976,11 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
-                            }else if (secilenAltBaslik == "Yüzde Hesaplama Aracı") {
+                            } else if (secilenAltBaslik == "Yüzde Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;"
                                 hesaplaPop.innerHTML = `
                                                         <form style="flex-direction: column; row-gap:10px;">
+                                                        <h3>${secilenAltBaslik}</h3>
                                                             <div style="display: flex;margin-left: 20px;">
                                                                 <b>İşlem: </b>
                                                                 <select name="" id="yuzdeSecim" style="text-align: center;">
@@ -1005,7 +1006,7 @@ fetch('baslik.json')
                                     let yuzdeSec = yuzdeSecim.value;
                                     console.log(yuzdeSec)
                                 })
-                                 yuzdeHesapla.addEventListener('click', function (event) {
+                                yuzdeHesapla.addEventListener('click', function (event) {
                                     event.preventDefault()
                                     if (yuzdeSecim.value == '' || aSayisi.value == '' || bSayisi.value == '') {
                                         alert('Tüm alanların dolu olması gerek.')
@@ -1025,21 +1026,21 @@ fetch('baslik.json')
                                             <div>${aSayisi.value} sayısı ${bSayisi.value} sayısının : %${aSonuc} oranıdır</div>
                                             `
                                         } else if (yuzdeSecim.value == 'C') {
-                                            let aSonuc = ((bSayisi.value - aSayisi.value) / aSayisi.value  * 100)
+                                            let aSonuc = ((bSayisi.value - aSayisi.value) / aSayisi.value * 100)
                                             let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
                                             hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
                                             <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
                                             <div>${aSayisi.value} sayısından ${bSayisi.value} sayısına değişim : %${aSonuc} oranındadır</div>
                                             `
                                         } else if (yuzdeSecim.value == 'D') {
-                                            let aSonuc = aSayisi.value *(1+(bSayisi.value / 100))
+                                            let aSonuc = aSayisi.value * (1 + (bSayisi.value / 100))
                                             let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
                                             hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
                                             <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
                                             <div>${aSayisi.value} sayısı %${bSayisi.value} arttırılırsa : ${aSonuc} olur</div>
                                             `
                                         } else if (yuzdeSecim.value == 'E') {
-                                            let aSonuc = aSayisi.value *(1-(bSayisi.value / 100))
+                                            let aSonuc = aSayisi.value * (1 - (bSayisi.value / 100))
                                             let selectedText = yuzdeSecim.options[yuzdeSecim.selectedIndex].text;
                                             hesaplaPop.innerHTML = `<h3>${secilenAltBaslik} Sonuçları</h3>
                                             <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>${selectedText}<b/></div>
@@ -1048,35 +1049,171 @@ fetch('baslik.json')
                                         }
                                     }
                                 })
+                            } else if (secilenAltBaslik == "İhbar Tazminatı Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <form style="flex-direction: column; row-gap:10px;">
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <div style="background-color: #2D3940;color: #fff;margin-bottom: 20px; padding:5px 5px;border-radius: 4px;"><b>NOT:</b>İşten ayrılma tarihindeki aylık brüt maaşı giriniz.</div>
+                                                            <div><b>İşe Başlama Tarihi: </b><input type="date" name="" id="girisTarih"></div>
+                                                            <div><b>İşten Ayrılma Tarihi: </b><input type="date" name="" id="cikisTarih"></div>
+                                                            <div><b>Aylık Brüt Maaş: </b><input type="text" name="" id="brutMaas"></div>
+                                                            <input type="submit" value="Hesapla" id="ihbarHesapla">
+                                                        </form>
+                                                        `
+
+                                let girisTarih = document.querySelector('#girisTarih')
+                                let cikisTarih = document.querySelector('#cikisTarih')
+                                let brutMaas = document.querySelector('#brutMaas')
+                                let ihbarHesapla = document.querySelector('#ihbarHesapla')
+
+
+
+                                // Önce ms olarak fark bulunup sonra güne çevrildi.
+                                let ihbarFarkMs = cikisTarih.value - girisTarih.value
+                                let ihbarFarkGun = Math.round(ihbarFarkMs / (1000 * 60 * 60 * 24))
+
+                                console.log(ihbarFarkMs)
+                                console.log(ihbarFarkGun)
+
+                                ihbarHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+
+                                    let girisTarihi = new Date(girisTarih.value)
+                                    let cikisTarihi = new Date(cikisTarih.value)
+
+                                    // Saatler önemli olamadığı için sıfırlanıyor.
+                                    girisTarihi.setHours(0, 0, 0, 0)
+                                    cikisTarihi.setHours(0, 0, 0, 0)
+
+                                    let ihbarFarkMs = cikisTarihi - girisTarihi
+                                    let ihbarFarkGun = Math.round(ihbarFarkMs / (1000 * 60 * 60 * 24))
+
+                                    if (ihbarFarkGun < 180) {
+                                        let brutİhbar = brutMaas.value * (14 / 30)
+                                        let brutVergi = (brutİhbar / 100) * 15
+                                        let brutDamga = (brutİhbar / 100) * 0.759
+                                        let brutNet = brutİhbar - brutVergi - brutDamga
+                                        hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>Hesaplamaya Esas Gün: </b>${ihbarFarkGun}</div>
+                                                            <div><b>İhbar Süresi: </b>14 Gün</div>
+                                                            <div><b>İhbar Tazminatına Esas Ücret: </b>${brutMaas.value} TL</div>
+                                                            <div><b>İhbar Tazminatı (Brüt): </b>${brutİhbar.toFixed(2)}  TL</div>
+                                                            <div><b>Gelir Vergisi Kesintisi: </b>${brutVergi.toFixed(2)}  TL</div>
+                                                            <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamga.toFixed(2)}  TL</div>
+                                                            <div><b>Ödenecek İhbar Tazminatı (Net): </b>${brutNet.toFixed(2)}  TL</div>
+                                                        </div>
+                                                        `
+                                    } else if (ihbarFarkGun >= 181 && ihbarFarkGun < 548) {
+                                        let brutİhbar = brutMaas.value * (28 / 30)
+                                        let brutVergi = (brutİhbar / 100) * 15
+                                        let brutDamga = (brutİhbar / 100) * 0.759
+                                        let brutNet = brutİhbar - brutVergi - brutDamga
+                                        hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>Hesaplamaya Esas Gün: </b>${ihbarFarkGun}</div>
+                                                            <div><b>İhbar Süresi: </b>28 Gün</div>
+                                                            <div><b>İhbar Tazminatına Esas Ücret: </b>${brutMaas.value} TL</div>
+                                                            <div><b>İhbar Tazminatı (Brüt): </b>${brutİhbar.toFixed(2)} TL</div>
+                                                            <div><b>Gelir Vergisi Kesintisi: </b>${brutVergi.toFixed(2)} TL</div>
+                                                            <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamga.toFixed(2)} TL</div>
+                                                            <div><b>Ödenecek İhbar Tazminatı (Net): </b>${brutNet.toFixed(2)} TL</div>
+                                                        </div>
+                                                        `
+                                    } else if (ihbarFarkGun >= 549 && ihbarFarkGun < 1095) {
+                                        let brutİhbar = brutMaas.value * (42 / 30)
+                                        let brutVergi = (brutİhbar / 100) * 15
+                                        let brutDamga = (brutİhbar / 100) * 0.759
+                                        let brutNet = brutİhbar - brutVergi - brutDamga
+                                        hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>Hesaplamaya Esas Gün: </b>${ihbarFarkGun}</div>
+                                                            <div><b>İhbar Süresi: </b>42 Gün</div>
+                                                            <div><b>İhbar Tazminatına Esas Ücret: </b>${brutMaas.value} TL</div>
+                                                            <div><b>İhbar Tazminatı (Brüt): </b>${brutİhbar.toFixed(2)}  TL</div>
+                                                            <div><b>Gelir Vergisi Kesintisi: </b>${brutVergi.toFixed(2)}  TL</div>
+                                                            <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamga.toFixed(2)}  TL</div>
+                                                            <div><b>Ödenecek İhbar Tazminatı (Net): </b>${brutNet.toFixed(2)}  TL</div>
+                                                        </div>
+                                                        `
+                                    } else if (ihbarFarkGun >= 1096) {
+                                        let brutİhbar = brutMaas.value * (56 / 30)
+                                        let brutVergi = (brutİhbar / 100) * 15
+                                        let brutDamga = (brutİhbar / 100) * 0.759
+                                        let brutNet = brutİhbar - brutVergi - brutDamga
+                                        hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>Hesaplamaya Esas Gün: </b>${ihbarFarkGun}</div>
+                                                            <div><b>İhbar Süresi: </b>56 Gün</div>
+                                                            <div><b>İhbar Tazminatına Esas Ücret: </b>${brutMaas.value} TL</div>
+                                                            <div><b>İhbar Tazminatı (Brüt): </b>${brutİhbar.toFixed(2)}  TL</div>
+                                                            <div><b>Gelir Vergisi Kesintisi: </b>${brutVergi.toFixed(2)}  TL</div>
+                                                            <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamga.toFixed(2)}  TL</div>
+                                                            <div><b>Ödenecek İhbar Tazminatı (Net): </b>${brutNet.toFixed(2)}  TL</div>
+                                                        </div>
+                                                        `
+                                    }
+                                })
                             }
 
 
 
-                            else if (secilenAltBaslik == "İhbar Tazminatı Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı19:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                                let hesaplanacakTarih = new Date(ayYilGun.value)
-                                let bugun = new Date()
 
-                                // Saatler önemli olamadığı için sıfırlanıyor.
-                                hesaplanacakTarih.setHours(0, 0, 0, 0)
-                                bugun.setHours(0, 0, 0, 0)
+                            else if (secilenAltBaslik == "İşsizlik Maaşı Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <form style="flex-direction:column; row-gap:10px;">
+                                                        <h3>${secilenAltBaslik}</h3>
+                                                            <div>
+                                                                <b>Son 3 Yıl Prim Gün Sayısı:</b>
+                                                                <select name="" id="selectGun">
+                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="0">600 günden az</option>
+                                                                    <option value="1">600 - 899 gün arası</option>
+                                                                    <option value="2">900 - 1079 gün arası</option>
+                                                                    <option value="3">1080 gün (3 yıl kesintisiz çalışma durumunda)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div><b>İşten ayrılmadan önceki son 4 ayda alınan brüt maaşlar:</b></div>
+                                                            <div><b>1. Ay Brüt Ücret:</b><input type="text" name="" id="brutMaas1"></div>
+                                                            <div><b>2. Ay Brüt Ücret:</b><input type="text" name="" id="brutMaas2"></div>
+                                                            <div><b>3. Ay Brüt Ücret:</b><input type="text" name="" id="brutMaas3"></div>
+                                                            <div><b>4. Ay Brüt Ücret:</b><input type="text" name="" id="brutMaas4"></div>
+                                                            <input type="submit" value="Hesapla" id="issizlikHesapla">
+                                                        </form>
+                                                        `
 
-                                // Önce ms olarak fark bulunup sonra güne çevrildi.
-                                let farkMs = bugun - hesaplanacakTarih
-                                let farkGun = Math.round(farkMs / (1000 * 60 * 60 * 24))
-                            } 
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            else if (secilenAltBaslik == "Maaş Hesaplamaları (Brüt-Net)") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı20:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Yıllık İzin Hesaplama Aracı") {
+
+                                let selectGun = document.querySelector('#selectGun')
+                                let brutMaas1 = document.querySelector('#brutMaas1')
+                                let brutMaas2 = document.querySelector('#brutMaas2')
+                                let brutMaas3 = document.querySelector('#brutMaas3')
+                                let brutMaas4 = document.querySelector('#brutMaas4')
+                                let issizlikHesapla = document.querySelector('#issizlikHesapla')
+
+                                issizlikHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    
+                                    if(selectGun.value == 0){
+                                        hesaplaPop.innerHTML=`
+                                        <div><b>NOT: İşsizlik maaşı alabilmek için hizmet akdinin feshinden önceki son üç yıl içinde en az 600 gün süre (20 ay) ile işsizlik sigortası primi ödemiş olmak gerekmektedir. Bu nedenle maalesef işsizlik maaşı alma hakkınız bulunmamaktadır.</b></div>
+                                        `
+                                    }
+                                })
+
+
+                            }
+
+
+
+
+
+                            else if (secilenAltBaslik == "Yıllık İzin Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı21:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Desi Hesaplama Aracı") {
