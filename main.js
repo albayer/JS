@@ -1503,7 +1503,6 @@ fetch('baslik.json')
                                 let boy = document.querySelector('#boy')
                                 let yukseklik = document.querySelector('#yukseklik')
                                 let desiHesapla = document.querySelector('#desiHesapla')
-
                                 desiHesapla.addEventListener('click', function (event) {
                                     event.preventDefault()
                                     desiSonuc = (en.value * boy.value * yukseklik.value) / 3000
@@ -1516,7 +1515,6 @@ fetch('baslik.json')
                                         alert('Lütfen tüm alanların dolu olduğundan emin olunuz.')
                                     }
                                 })
-
                             } else if (secilenAltBaslik == "İndirim Hesaplama Aracı") {
                                 hesaplaPop.style = "display:flex;"
                                 hesaplaPop.innerHTML = `
@@ -1538,50 +1536,356 @@ fetch('baslik.json')
                                                         </form>
                                                     </div>
                                                     `
-
                                 let indirimSelect = document.querySelector('#indirimSelect')
                                 let normalD = document.querySelector('#normalD')
+                                let normalF = document.querySelector('#normalF')
                                 let indirimliD = document.querySelector('#indirimliD')
+                                let indirimliF = document.querySelector('#indirimliF')
                                 let oranD = document.querySelector('#oranD')
+                                let indirimO = document.querySelector('#indirimO')
                                 let indirimHesapla = document.querySelector('#indirimHesapla')
 
                                 indirimSelect.addEventListener("change", function (event) {
                                     event.preventDefault()
                                     let selectedInd = indirimSelect.value;
-
-                                    if (selectedInd == '0') {
-                                        normalD.style = "display:flex;"
+                                    if (indirimSelect.value == '0') {
+                                        normalD.style = "display:flex; margin-left: -41px;"
                                         indirimliD.style = "display:none;"
-                                        oranD.style = "display:flex;"
+                                        oranD.style = "display:flex; margin-right: 78px;"
                                     } else if (selectedInd == '1') {
                                         normalD.style = "display:none;"
-                                        indirimliD.style = "display:flex;"
-                                        oranD.style = "display:flex;"
-                                    }
-                                    else if (selectedInd == '2') {
-                                        normalD.style = "display:flex;"
-                                        indirimliD.style = "display:flex;"
+                                        indirimliD.style = "display:flex; margin-right: 50px;"
+                                        oranD.style = "display:flex; margin-right: 78px;"
+                                    } else if (selectedInd == '2') {
+                                        normalD.style = "display:flex; margin-left: -40px;"
+                                        indirimliD.style = "display:flex; margin-right: 50px;"
                                         oranD.style = "display:none;"
                                     }
                                 })
+                                indirimHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (indirimSelect.value == '0') {
+                                        let sonuc = (normalF.value / 100) * indirimO.value
+                                        let fark = normalF.value - sonuc
+                                        hesaplaPop.innerHTML = `
+                                                                <div style="display: flex; flex-direction: column; row-gap: 5px;">
+                                                                    <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                    <div><b>Normal Fiyat: </b> ${normalF.value} TL</div>
+                                                                    <div><b>İndirim Tutarı: </b> ${sonuc} TL</div>
+                                                                    <div><b>İndirimli Fiyat: </b> ${fark} TL</div>
+                                                                    <div><b>İndirim Oranı: </b> %${indirimO.value}</div>
+                                                                </div>
+                                                                `
+                                    } else if (indirimSelect.value == '1') {
+                                        let sonuc = (indirimliF.value) / (1 - (indirimO.value / 100))
+                                        let fark = sonuc - indirimliF.value
+                                        hesaplaPop.innerHTML = `
+                                                                <div style="display: flex; flex-direction: column; row-gap: 5px;">
+                                                                    <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                    <div><b>Normal Fiyat: </b> ${sonuc} TL</div>
+                                                                    <div><b>İndirim Tutarı: </b> ${fark} TL</div>
+                                                                    <div><b>İndirimli Fiyat: </b> ${indirimliF.value} TL</div>
+                                                                    <div><b>İndirim Oranı: </b> %${indirimO.value}</div>
+                                                                </div>
+                                                                `
+                                    } else if (indirimSelect.value == '2') {
+                                        let sonuc = ((normalF.value - indirimliF.value) / normalF.value) * 100
+                                        let fark = normalF.value - indirimliF.value
+                                        hesaplaPop.innerHTML = `
+                                                                <div style="display: flex; flex-direction: column; row-gap: 5px;">
+                                                                    <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                    <div><b>Normal Fiyat: </b> ${normalF.value} TL</div>
+                                                                    <div><b>İndirim Tutarı: </b> ${fark} TL</div>
+                                                                    <div><b>İndirimli Fiyat: </b> ${indirimliF.value} TL</div>
+                                                                    <div><b>İndirim Oranı: </b> %${sonuc}</div>
+                                                                </div>
+                                                                `
+                                    }
+                                })
+                            }
+                            else if (secilenAltBaslik == "Kâr Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <div>
+                                                        <form style="flex-direction: column; row-gap: 10px;">
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <div>
+                                                                <b>Hesaplama Şekli:</b>
+                                                                <select name="" id="karSelect">
+                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="A">Kâr oranı hesaplama (Alış ve satış fiyatından)</option>
+                                                                    <option value="B">Satış fiyatı hesaplama (Alış fiyatı ve kâr oranından)</option>
+                                                                    <option value="C">Alış fiyatı hesaplama (Satış fiyatı ve kâr oranından)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div id="alisDiv" style="margin-left: 5px;"><b>Alış Fiyatı:</b><input type="text" name="" id="alis"></div>
+                                                            <div id="satisDiv"><b>Satış Fiyatı:</b><input type="text" name="" id="satis"></div>
+                                                            <div id="karDiv" style="display:none;"><b>Kâr Oranı (%):</b><input type="text" name="" id="kar"></div>
+                                                            <div><input type="submit" value="Hesapla" id="karHesaplama"></div>
+                                                        </form>
+                                                    </div>
+                                                    `
+                                let karSelect = document.querySelector('#karSelect')
+                                let alisDiv = document.querySelector('#alisDiv')
+                                let satisDiv = document.querySelector('#satisDiv')
+                                let karDiv = document.querySelector('#karDiv')
+                                let alis = document.querySelector('#alis')
+                                let satis = document.querySelector('#satis')
+                                let kar = document.querySelector('#kar')
+                                let karHesaplama = document.querySelector('#karHesaplama')
+                                karSelect.addEventListener("change", function (event) {
+                                    event.preventDefault()
+                                    let selectedKar = karSelect.value;
+                                    if (selectedKar == 'A') {
+                                        alisDiv.style = "display:flex; margin-left: 5px;"
+                                        satisDiv.style = "display:flex;"
+                                        karDiv.style = "display:none;"
+                                    } else if (selectedKar == 'B') {
+                                        alisDiv.style = "display:flex;margin-left: 5px;"
+                                        satisDiv.style = "display:none; margin-right: 50px;"
+                                        karDiv.style = "display:flex; margin-right: 26px;"
+                                    } else if (selectedKar == 'C') {
+                                        alisDiv.style = "display:none;"
+                                        satisDiv.style = "display:flex;"
+                                        karDiv.style = "display:flex; margin-right: 26px;"
+                                    }
+                                })
+                                karHesaplama.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (karSelect.value == 'A') {
+                                        let sonuc = ((satis.value - alis.value) / alis.value) * 100
+                                        let fark = satis.value - alis.value
+                                        let karMarji = (fark / satis.value) * 100
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı):</b>${alis.value} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı):</b>${satis.value} TL</div>
+                                                                <div><b>Brüt Kâr Tutarı: </b>${fark} TL</div>
+                                                                <div><b>Kâr Oranı: </b>%${sonuc} (Brüt kârın maliyet tutarına göre yüzde oranı)</div>
+                                                                <div><b>Kâr Marjı: </b>%${karMarji}</div>
+                                                            </div>
+                                                            `
+                                    } else if (karSelect.value == 'B') {
+                                        let sonuc = (alis.value / 100) * kar.value
+                                        let fark = parseFloat(alis.value) + parseFloat(sonuc)
+                                        let karMarji = (sonuc / fark) * 100
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı):</b>${alis.value} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı):</b>${fark.toFixed(2)} TL</div>
+                                                                <div><b>Brüt Kâr Tutarı: </b>${sonuc.toFixed(2)} TL</div>
+                                                                <div><b>Kâr Oranı: </b>%${kar.value} (Brüt kârın maliyet tutarına göre yüzde oranı)</div>
+                                                                <div><b>Kâr Marjı: </b>%${karMarji}</div>
+                                                            </div>
+                                                            `
+                                    } else if (karSelect.value == 'C') {
+                                        let sonuc = satis.value / (1 + (kar.value / 100))
+                                        let fark = satis.value - sonuc
+                                        let karMarji = (fark / satis.value) * 100
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı):</b>${sonuc.toFixed(2)} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı):</b>${satis.value} TL</div>
+                                                                <div><b>Brüt Kâr Tutarı: </b>${fark.toFixed(2)} TL</div>
+                                                                <div><b>Kâr Oranı: </b>%${kar.value} (Brüt kârın maliyet tutarına göre yüzde oranı)</div>
+                                                                <div><b>Kâr Marjı: </b>%${karMarji}</div>
+                                                            </div>
+                                                            `
+                                    }
+                                })
+                            } else if (secilenAltBaslik == "Zam Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <div>
+                                                        <form style="flex-direction: column; row-gap: 10px;">
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <div>
+                                                                <b>İşlem:</b>
+                                                                <select name="" id="zamSelect">
+                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="D">Zamlı fiyat hesaplama (Normal fiyat ve artış oranı ile)</option>
+                                                                    <option value="E">Zam oranı hesaplama (Normal ve zamlı fiyat ile)</option>
+                                                                    <option value="F">Normal fiyat hesaplama (Zamlı fiyat ve artış oranı ile)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div id="normalDiv" style="margin-right: 12px;"><b>Normal Fiyatı:</b><input type="text" name="" id="normal"></div>
+                                                            <div id="zamliDiv"><b>Zamlı Fiyatı:</b><input type="text" name="" id="zamli"></div>
+                                                            <div id="zamOrDiv" style="display:none;"><b>Zam Oranı (%):</b><input type="text" name="" id="zamOr"></div>
+                                                            <div><input type="submit" value="Hesapla" id="zamHesaplama"></div>
+                                                        </form>
+                                                    </div>
+                                                    `
+                                let zamSelect = document.querySelector('#zamSelect')
+                                let normalDiv = document.querySelector('#normalDiv')
+                                let zamliDiv = document.querySelector('#zamliDiv')
+                                let zamOrDiv = document.querySelector('#zamOrDiv')
+                                let normal = document.querySelector('#normal')
+                                let zamli = document.querySelector('#zamli')
+                                let zamOr = document.querySelector('#zamOr')
+                                let zamHesaplama = document.querySelector('#zamHesaplama')
+                                zamSelect.addEventListener("change", function (event) {
+                                    event.preventDefault()
+                                    let selectedZam = zamSelect.value;
+                                    if (selectedZam == 'D') {
+                                        normalDiv.style = "display:flex; margin-right: 12px;"
+                                        zamliDiv.style = "display:none;"
+                                        zamOrDiv.style = "display:flex; margin-right: 26px;"
+                                    } else if (selectedZam == 'E') {
+                                        normalDiv.style = "display:flex;margin-right: 12px;"
+                                        zamliDiv.style = "display:flex;"
+                                        zamOrDiv.style = "display:none;"
+                                    } else if (selectedZam == 'F') {
+                                        normalDiv.style = "display:none;"
+                                        zamliDiv.style = "display:flex;margin-right: 2px;"
+                                        zamOrDiv.style = "display:flex; margin-right: 26px;"
+                                    }
+                                })
+                                zamHesaplama.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (zamSelect.value == 'D') {
+                                        let tutar = (normal.value / 100) * zamOr.value
+                                        let fiyat = parseFloat(normal.value) + parseFloat(tutar)
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Normal Fiyat: </b>${normal.value} TL</div>
+                                                                <div><b>Zam Tutarı: </b>${tutar.toFixed(2)} TL</div>
+                                                                <div><b>Zamlı Fiyat: </b>${fiyat.toFixed(2)} TL</div>
+                                                                <div><b>Zam Oranı: </b>%${zamOr.value}</div>
+                                                            </div>
+                                                            `
+                                    } else if (zamSelect.value == 'E') {
+                                        let oran = ((zamli.value - normal.value) / normal.value) * 100
+                                        let fiyat = zamli.value - normal.value
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Normal Fiyat: </b>${normal.value} TL</div>
+                                                                <div><b>Zam Tutarı: </b>${fiyat} TL</div>
+                                                                <div><b>Zamlı Fiyat: </b>${zamli.value} TL</div>
+                                                                <div><b>Zam Oranı: </b>%${oran}</div>
+                                                            </div>
+                                                            `
+                                    } else if (zamSelect.value == 'F') {
+                                        let sonuc = zamli.value / (1 + (zamOr.value / 100))
+                                        let fiyat = zamli.value - sonuc
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Normal Fiyat: </b>${sonuc.toFixed(2)} TL</div>
+                                                                <div><b>Zam Tutarı: </b>${fiyat.toFixed(2)} TL</div>
+                                                                <div><b>Zamlı Fiyat: </b>${zamli.value} TL</div>
+                                                                <div><b>Zam Oranı: </b>%${zamOr.value}</div>
+                                                            </div>
+                                                            `
+                                    }
+                                })
+                            } else if (secilenAltBaslik == "Zarar Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <div>
+                                                        <form style="flex-direction: column; row-gap: 10px;">
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <div>
+                                                                <b>İşlem:</b>
+                                                                <select name="" id="zararSelect">
+                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="G">Satış fiyatı hesaplama (Alış fiyatı ve zarar oranı ile)</option>
+                                                                    <option value="H">Zarar oranı hesaplama (Alış ve satış fiyatı ile)</option>
+                                                                    <option value="I">Alış fiyatı hesaplama (Satış fiyatı ve zarar oranı ile)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div id="alisFDiv"><b>Alış Fiyatı: </b><input type="text" name="" id="alisF"></div>
+                                                            <div id="satisFDiv" style="margin-right: 6px;"><b>Satış Fiyatı: </b><input type="text" name="" id="satisF"></div>
+                                                            <div id="zararOrDiv" style="display:none;"><b>Zarar Oranı (%): </b><input type="text" name="" id="zararOr"></div>
+                                                            <div><input type="submit" value="Hesapla" id="zararHesaplama"></div>
+                                                        </form>
+                                                    </div>
+                                                    `
+                                let zararSelect = document.querySelector('#zararSelect')
+                                let alisFDiv = document.querySelector('#alisFDiv')
+                                let satisFDiv = document.querySelector('#satisFDiv')
+                                let zararOrDiv = document.querySelector('#zararOrDiv')
+                                let alisF = document.querySelector('#alisF')
+                                let satisF = document.querySelector('#satisF')
+                                let zararOr = document.querySelector('#zararOr')
+                                let zararHesaplama = document.querySelector('#zararHesaplama')
 
-
-
-
+                                zararSelect.addEventListener("change", function (event) {
+                                    event.preventDefault()
+                                    let selectZarar = zararSelect.value
+                                    if (selectZarar == 'G') {
+                                        alisFDiv.style = "display:flex;"
+                                        satisFDiv.style = "display:none;"
+                                        zararOrDiv.style = "display:flex; margin-right: 46px;"
+                                    } else if (selectZarar == 'H') {
+                                        alisFDiv.style = "display:flex;"
+                                        satisFDiv.style = "display:flex;margin-right: 6px;"
+                                        zararOrDiv.style = "display:none;"
+                                    } else if (selectZarar == 'I') {
+                                        alisFDiv.style = "display:none;"
+                                        satisFDiv.style = "display:flex;"
+                                        zararOrDiv.style = "display:flex; margin-right: 40px;"
+                                    }
+                                })
+                                zararHesaplama.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    if (zararSelect.value == 'G') {
+                                        let tutar = alisF.value * (1 - (zararOr.value / 100))
+                                        let fiyat = alisF.value - tutar
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı): </b>${alisF.value} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı): </b>${tutar.toFixed(2)} TL</div>
+                                                                <div><b>Brüt Zarar Tutarı: </b>${fiyat.toFixed(2)} TL</div>
+                                                                <div><b>Zarar Oranı:  </b>%${zararOr.value}</div>
+                                                            </div>
+                                                            `
+                                    } else if (zararSelect.value == 'H') {
+                                        let tutar = alisF.value - satisF.value
+                                        let fiyat = ((alisF.value - satisF.value) / alisF.value) * 100
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı): </b>${alisF.value} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı): </b>${satisF.value} TL</div>
+                                                                <div><b>Brüt Zarar Tutarı: </b>${tutar.toFixed(2)} TL</div>
+                                                                <div><b>Zarar Oranı:  </b>%${fiyat.toFixed(2)}</div>
+                                                            </div>
+                                                            `
+                                    }else if (zararSelect.value == 'I') {
+                                        let tutar = satisF.value / (1 - (zararOr.value / 100))
+                                        let fiyat = tutar - satisF.value
+                                        hesaplaPop.innerHTML = `
+                                                            <div style="display:flex; flex-direction:column; row-gap: 10px;">
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>Alış Fiyatı (Maliyet Tutarı): </b>${tutar.toFixed(2)} TL</div>
+                                                                <div><b>Satış Fiyatı (Gelir Tutarı): </b>${satisF.value} TL</div>
+                                                                <div><b>Brüt Zarar Tutarı: </b>${fiyat.toFixed(2)} TL</div>
+                                                                <div><b>Zarar Oranı:  </b>%${zararOr.value}</div>
+                                                            </div>
+                                                            `
+                                    }
+                                })
                             }
 
 
 
-                            else if (secilenAltBaslik == "Kâr Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı24:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Zam Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı25:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Zarar Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı26:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (event.target.tagName == 'H2' || secilen) {
+
+
+
+
+
+
+
+
+
+
+                            else if (event.target.tagName == 'H2' || secilen) {
                                 hesaplaPop.style = "display:none;"
                             }
                         } else {
