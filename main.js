@@ -567,7 +567,7 @@ fetch('baslik.json')
                                                         </form>
                                                             `
                                 document.querySelector('#suIhtiyaciHesapla').addEventListener("click", function (e) {
-                                    e.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
+                                    e.preventDefault();
 
                                     const kilo = parseFloat(document.querySelector('#kiloGiris').value);
                                     const cinsiyet = document.querySelector('input[name="cinsiyet"]:checked');
@@ -1004,7 +1004,6 @@ fetch('baslik.json')
                                 yuzdeSecim.addEventListener("change", function () {
                                     event.preventDefault()
                                     let yuzdeSec = yuzdeSecim.value;
-                                    console.log(yuzdeSec)
                                 })
                                 yuzdeHesapla.addEventListener('click', function (event) {
                                     event.preventDefault()
@@ -1073,8 +1072,6 @@ fetch('baslik.json')
                                 let ihbarFarkMs = cikisTarih.value - girisTarih.value
                                 let ihbarFarkGun = Math.round(ihbarFarkMs / (1000 * 60 * 60 * 24))
 
-                                console.log(ihbarFarkMs)
-                                console.log(ihbarFarkGun)
 
                                 ihbarHesapla.addEventListener('click', function (event) {
                                     event.preventDefault()
@@ -1198,11 +1195,71 @@ fetch('baslik.json')
 
                                 issizlikHesapla.addEventListener('click', function (event) {
                                     event.preventDefault()
-                                    
-                                    if(selectGun.value == 0){
-                                        hesaplaPop.innerHTML=`
+
+                                    if (selectGun.value == 0) {
+                                        hesaplaPop.innerHTML = `
                                         <div><b>NOT: İşsizlik maaşı alabilmek için hizmet akdinin feshinden önceki son üç yıl içinde en az 600 gün süre (20 ay) ile işsizlik sigortası primi ödemiş olmak gerekmektedir. Bu nedenle maalesef işsizlik maaşı alma hakkınız bulunmamaktadır.</b></div>
                                         `
+                                    } else if (selectGun.value == 1) {
+                                        let brutOrt = (parseFloat(brutMaas1.value) + parseFloat(brutMaas2.value) + parseFloat(brutMaas3.value) + parseFloat(brutMaas4.value)) / 4
+                                        let brutGunluk = brutOrt / 30
+                                        let netGunluk = (brutGunluk / 100) * 40
+                                        let brutAylik = ((brutGunluk / 100) * 40) * 30
+                                        let brutDamgaVergisi = brutAylik * 0.00759
+                                        let aylikNet = brutAylik - brutDamgaVergisi
+                                        hesaplaPop.innerHTML = `
+                                                            <div>
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>İşsizlik Maaşı Alabileceğiniz Süre: </b>6 Ay</div>
+                                                                <div><b>Günlük İşsizlik Ödeneği (Brüt): </b>${netGunluk.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Brüt): </b>${brutAylik.toFixed(2)} TL</div>
+                                                                <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamgaVergisi.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Net): </b>${aylikNet.toFixed(2)} TL</div>
+                                                                <div><b>6 Ay Boyunca Alabileceğiniz Toplam İşsizlik Maaşı (Net): </b>${(aylikNet * 6).toFixed(2)} TL</div>
+                                                                <div><b>2025 Yılı için En Düşük (Taban) Aylık İşsizlik Maaşı (Brüt): </b>10402,20 TL (Ek bilgidir.)</div>
+                                                                <div><b>2025 Yılı için En Yüksek (Tavan) Aylık İşsizlik Maaşı (Brüt): </b>20804,40 TL (Ek bilgidir.)</div>
+                                                            </div>
+                                                            `
+                                    } else if (selectGun.value == 2) {
+                                        let brutOrt = (parseFloat(brutMaas1.value) + parseFloat(brutMaas2.value) + parseFloat(brutMaas3.value) + parseFloat(brutMaas4.value)) / 4
+                                        let brutGunluk = brutOrt / 30
+                                        let netGunluk = (brutGunluk / 100) * 40
+                                        let brutAylik = ((brutGunluk / 100) * 40) * 30
+                                        let brutDamgaVergisi = brutAylik * 0.00759
+                                        let aylikNet = brutAylik - brutDamgaVergisi
+                                        hesaplaPop.innerHTML = `
+                                                            <div>
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>İşsizlik Maaşı Alabileceğiniz Süre: </b>8 Ay</div>
+                                                                <div><b>Günlük İşsizlik Ödeneği (Brüt): </b>${netGunluk.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Brüt): </b>${brutAylik.toFixed(2)} TL</div>
+                                                                <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamgaVergisi.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Net): </b>${aylikNet.toFixed(2)} TL</div>
+                                                                <div><b>6 Ay Boyunca Alabileceğiniz Toplam İşsizlik Maaşı (Net): </b>${(aylikNet * 8).toFixed(2)} TL</div>
+                                                                <div><b>2025 Yılı için En Düşük (Taban) Aylık İşsizlik Maaşı (Brüt): </b>10402,20 TL (Ek bilgidir.)</div>
+                                                                <div><b>2025 Yılı için En Yüksek (Tavan) Aylık İşsizlik Maaşı (Brüt): </b>20804,40 TL (Ek bilgidir.)</div>
+                                                            </div>
+                                                            `
+                                    } else if (selectGun.value == 3) {
+                                        let brutOrt = (parseFloat(brutMaas1.value) + parseFloat(brutMaas2.value) + parseFloat(brutMaas3.value) + parseFloat(brutMaas4.value)) / 4
+                                        let brutGunluk = brutOrt / 30
+                                        let netGunluk = (brutGunluk / 100) * 40
+                                        let brutAylik = ((brutGunluk / 100) * 40) * 30
+                                        let brutDamgaVergisi = brutAylik * 0.00759
+                                        let aylikNet = brutAylik - brutDamgaVergisi
+                                        hesaplaPop.innerHTML = `
+                                                            <div>
+                                                                <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                                <div><b>İşsizlik Maaşı Alabileceğiniz Süre: </b>10 Ay</div>
+                                                                <div><b>Günlük İşsizlik Ödeneği (Brüt): </b>${netGunluk.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Brüt): </b>${brutAylik.toFixed(2)} TL</div>
+                                                                <div><b>Damga Vergisi Kesintisi (%0,759): </b>${brutDamgaVergisi.toFixed(2)} TL</div>
+                                                                <div><b>Aylık İşsizlik Maaşı (Net): </b>${aylikNet.toFixed(2)} TL</div>
+                                                                <div><b>6 Ay Boyunca Alabileceğiniz Toplam İşsizlik Maaşı (Net): </b>${(aylikNet * 10).toFixed(2)} TL</div>
+                                                                <div><b>2025 Yılı için En Düşük (Taban) Aylık İşsizlik Maaşı (Brüt): </b>10402,20 TL (Ek bilgidir.)</div>
+                                                                <div><b>2025 Yılı için En Yüksek (Tavan) Aylık İşsizlik Maaşı (Brüt): </b>20804,40 TL (Ek bilgidir.)</div>
+                                                            </div>
+                                                            `
                                     }
                                 })
 
@@ -1210,19 +1267,312 @@ fetch('baslik.json')
                             }
 
 
-
-
-
                             else if (secilenAltBaslik == "Yıllık İzin Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı21:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik}</h3>
+                                                            <form style="flex-direction: column; row-gap: 10px;;">
+                                                                <div id:"calisanRadio" style="display: flex;column-gap: 10px;">
+                                                                    <b>Çalışan Türü: </b>
+                                                                    <div style="display: flex; align-items: center;">
+                                                                        <label for="devletMemuru">Devlet Memuru</label>
+                                                                        <input type="radio" name="calisanTur" id="devletMemuru" value="devletMemuru">
+                                                                    </div>
+                                                                    <div style="display: flex; align-items: center;">
+                                                                        <label for="digerCalisan">Diğer</label>
+                                                                        <input type="radio" name="calisanTur" id="digerCalisan" value="digerCalisan">
+                                                                    </div>
+                                                                </div>
+                                                                <div id="calisanDogumDiv" style="display: none; align-items: center; column-gap: 35px;"><b>Doğum Tarihi: </b><input type="date" name="" id="calisanDogumT"></div>
+                                                                <divstyle="display: flex; align-items: center; column-gap: 3px;"><b>İşe Başlama Tarihi: </b><input type="date" name="" id="calisanGirisT"></div>
+                                                                <div style="margin-top:10px;"><input type="submit" value="Hesapla" id="izinSuresiHesapla"></div>
+                                                            </form>
+                                                        </div>
+                                                        `
+                                let devletMemuru = document.querySelector('#devletMemuru')
+                                let digerCalisan = document.querySelector('#digerCalisan')
+                                let calisanDogumT = document.querySelector('#calisanDogumT')
+                                let calisanDogumDiv = document.querySelector('#calisanDogumDiv')
+                                let calisanGirisT = document.querySelector('#calisanGirisT')
+                                let izinSuresiHesapla = document.querySelector('#izinSuresiHesapla')
+
+                                function calisanRadioCheck() {
+                                    if (devletMemuru.checked) {
+                                        calisanDogumDiv.style.display = "none";
+                                    } else if (digerCalisan.checked) {
+                                        calisanDogumDiv.style.display = "flex";
+                                    }
+                                }
+                                devletMemuru.addEventListener("change", calisanRadioCheck);
+                                digerCalisan.addEventListener("change", calisanRadioCheck);
+
+                                izinSuresiHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    let dogumT = new Date(calisanDogumT.value)
+                                    let girisT = new Date(calisanGirisT.value)
+                                    let bugun = new Date()
+
+                                    // Çalışan Yaş Hesabı
+                                    let yasMs = bugun - dogumT
+                                    let yasSayi = Math.round(yasMs / (1000 * 60 * 60 * 24) / 365)
+
+                                    // Çalışan çalışma süresi
+                                    let calismaMs = bugun - girisT
+
+                                    let calismaMn = calismaMs / (1000 * 60)
+                                    let calismayil = calismaMn / 525960
+                                    let calismaAy = (calismaMn % 525960) / 43200
+                                    let calismaGun = ((calismaMn % 525960) % 43200) / 1440
+
+                                    if (digerCalisan.checked && girisT !== '' && dogumT !== '') {
+                                        if (Math.round(calismayil < 1)) {
+                                            let kalanSure = 31557600000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 1)
+
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.round(calismaAy)} Ay ${Math.round(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>1 yıllık hizmet süresini (kıdem) henüz doldurmadığınız için yıllık ücretli izin hakkınız bulunmamaktadır.</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılına gireceğiniz ${gun}.${ay}.${yil} tarihine ${Math.round(kalanSureGun)} gün kaldı.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.round(calismaAy)} Ay ${Math.round(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.round(calismaAy + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        } else if (Math.round(calismayil >= 1 && calismayil <= 5)) {
+                                            let kalanSure = 157788000000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let kalanYil = kalanSureGun / 365
+                                            let kalanGuns = kalanSureGun % 365
+                                            let kalanAy = kalanGuns / 30
+                                            let kalan = kalanGuns % 30
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 5)
+                                            // 5 yıl 157788000000 ms
+                                            let besYilFarkMs = 157788000000 - girisT
+                                            let besYilFarkGun = besYilFarkMs / 1440
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                        <b>Yaşınız: </b>${yasSayi}
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>14 Gün</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılına gireceğiniz ${gun}.${ay}.${yil} tarihine ${Math.round(kalanSureGun)} gün kaldı.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.round(calismayil + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                            // (${Math.floor(kalanYil)} Yıl ${Math.floor(kalanAy)} Ay ${Math.floor(kalan)} Gün) 
+
+                                        } else if (Math.round(calismayil > 5 && calismayil < 15)) {
+
+                                            let kalanSure = 473364000000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let kalanYil = kalanSureGun / 365
+                                            let kalanGuns = kalanSureGun % 365
+                                            let kalanAy = kalanGuns / 30
+                                            let kalan = kalanGuns % 30
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 15)
+                                            let besYilFarkMs = 157788000000 - girisT
+                                            let besYilFarkGun = besYilFarkMs / 1440
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                        <b>Yaşınız: </b>${yasSayi}
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>20 Gün</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılına gireceğiniz ${gun}.${ay}.${yil} tarihine ${Math.round(kalanSureGun)} gün kaldı.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.floor(calismayil + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        } else if (Math.round(calismayil >= 15)) {
+                                            let kalanSure = 473364000000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let kalanYil = kalanSureGun / 365
+                                            let kalanGuns = kalanSureGun % 365
+                                            let kalanAy = kalanGuns / 30
+                                            let kalan = kalanGuns % 30
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 16)
+                                            let besYilFarkMs = 157788000000 - girisT
+                                            let besYilFarkGun = besYilFarkMs / 1440
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                        <b>Yaşınız: </b>${yasSayi}
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>26 Gün</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılında ekstra bir izin hakkınız bulunmayacak. Tavan seviyedesiniz.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.floor(calismayil + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        }
+                                    } else if (devletMemuru.checked && girisT !== '') {
+                                        if (Math.round(calismayil < 1)) {
+                                            let kalanSure = 31557600000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 1)
+
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.round(calismaAy)} Ay ${Math.round(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>1 yıllık hizmet süresini (kıdem) henüz doldurmadığınız için yıllık ücretli izin hakkınız bulunmamaktadır.</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılına gireceğiniz ${gun}.${ay}.${yil} tarihine ${Math.round(kalanSureGun)} gün kaldı.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.round(calismaAy)} Ay ${Math.round(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.round(calismaAy + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        } else if (Math.round(calismayil > 1 && calismayil <= 10)) {
+
+                                            let kalanSure = 315576000000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let kalanYil = kalanSureGun / 365
+                                            let kalanGuns = kalanSureGun % 365
+                                            let kalanAy = kalanGuns / 30
+                                            let kalan = kalanGuns % 30
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 10)
+                                            let besYilFarkMs = 157788000000 - girisT
+                                            let besYilFarkGun = besYilFarkMs / 1440
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>20 Gün</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılına gireceğiniz ${gun}.${ay}.${yil} tarihine ${Math.round(kalanSureGun)} gün kaldı.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.floor(calismayil + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        } else if (Math.round(calismayil > 10)) {
+
+                                            let kalanSure = 315576000000 - calismaMs
+                                            let kalanSureGun = kalanSure / 86400000
+                                            let kalanYil = kalanSureGun / 365
+                                            let kalanGuns = kalanSureGun % 365
+                                            let kalanAy = kalanGuns / 30
+                                            let kalan = kalanGuns % 30
+                                            let yilSonra = girisT.setFullYear(girisT.getFullYear() + 10)
+                                            let besYilFarkMs = 157788000000 - girisT
+                                            let besYilFarkGun = besYilFarkMs / 1440
+                                            let gun = String(girisT.getDate()).padStart(2, '0');
+                                            let ay = String(girisT.getMonth() + 1).padStart(2, '0');
+                                            let yil = girisT.getFullYear();
+                                            hesaplaPop.innerHTML = `
+                                                        <div>
+                                                        <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>İşyerindeki Kıdem: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} Gün</div>
+                                                            <div><b>Yıllık Ücretli İzin Hakkı: </b>30 Gün</div>
+                                                            <div><b>Bir Sonraki Kıdem Artışına Kalan Gün Sayısı: </b>Yeni hizmet yılında ekstra bir izin hakkınız bulunmayacak. Tavan seviyedesiniz.</div>
+                                                            <div><b>ÖNEMLİ NOT: </b>${Math.floor(calismayil)} Yıl ${Math.floor(calismaAy)} Ay ${Math.floor(calismaGun)} gün kıdemi bulunan bir çalışan ${Math.floor(calismayil + 1)}.  hizmet yılında sayılmaktadır.</div>
+                                                        </div>
+                                                        `
+                                        }
+                                    } else {
+                                        alert('Tüm alanların dolu olduğundan emin olun.')
+                                    }
+                                })
                             } else if (secilenAltBaslik == "Desi Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı22:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                        <div>
+                                                            <h3>${secilenAltBaslik}</h3>
+                                                            <form style="flex-direction:column; row-gap:10px;">
+                                                                <div style="margin-left: 50px;"><b>En: </b><input type="text" name="" id="en"> cm</div>
+                                                                <div style="margin-left: 43px;"><b>Boy: </b><input type="text" name="" id="boy"> cm</div>
+                                                                <div><b>Yükseklik: </b><input type="text" name="" id="yukseklik"> cm</div>
+                                                                <div><input type="submit" value="Hesapla" id="desiHesapla"></div>
+                                                            </form>
+                                                        </div>
+                                                        `
+                                let en = document.querySelector('#en')
+                                let boy = document.querySelector('#boy')
+                                let yukseklik = document.querySelector('#yukseklik')
+                                let desiHesapla = document.querySelector('#desiHesapla')
+
+                                desiHesapla.addEventListener('click', function (event) {
+                                    event.preventDefault()
+                                    desiSonuc = (en.value * boy.value * yukseklik.value) / 3000
+                                    if (en.value !== '' && boy.value !== '' && yukseklik.value !== '') {
+                                        hesaplaPop.innerHTML = `
+                                                            <h3>${secilenAltBaslik} Sonuçları</h3>
+                                                            <div><b>${en.value}(cm) x ${boy.value}(cm) x ${yukseklik.value}(cm) Boyutlarındaki Paketin Desisi:</b>${desiSonuc.toFixed(3)} birimdir.</div>
+                                                            `
+                                    } else {
+                                        alert('Lütfen tüm alanların dolu olduğundan emin olunuz.')
+                                    }
+                                })
+
                             } else if (secilenAltBaslik == "İndirim Hesaplama Aracı") {
-                                hesaplaPop.style = "display=flex;"
-                                hesaplaPop.innerHTML = '<form><b>Kredi Tutarı23:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
-                            } else if (secilenAltBaslik == "Kâr Hesaplama Aracı") {
+                                hesaplaPop.style = "display:flex;"
+                                hesaplaPop.innerHTML = `
+                                                    <div>
+                                                        <form style="flex-direction: column; row-gap: 10px;">
+                                                            <div>
+                                                                <b>İşlem: </b>
+                                                                <select name="" id="indirimSelect" style="margin-left: 12px; width: 176px;">
+                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="0">İndirimli fiyat hesaplama</option>
+                                                                    <option value="1">Normal fiyat hesaplama</option>
+                                                                    <option value="2">İndirim oranı hesaplama</option>
+                                                                </select>
+                                                            </div>
+                                                            <div id="normalD" style=" margin-left: -41px;"><b>Normal Fiyat: </b><input type="text" name="" id="normalF"></div>
+                                                            <div id="indirimliD" style="display:none;"><b>İndirimli Fiyat:</b><input type="text" name="" id="indirimliF"></div>
+                                                            <div id="oranD" style="margin-right: 78px;"><b>İndirim Oranı (%): </b><input type="text" name="" id="indirimO"></div>
+                                                            <div><input type="submit" value="Hesapla" id="indirimHesapla"></div>
+                                                        </form>
+                                                    </div>
+                                                    `
+
+                                let indirimSelect = document.querySelector('#indirimSelect')
+                                let normalD = document.querySelector('#normalD')
+                                let indirimliD = document.querySelector('#indirimliD')
+                                let oranD = document.querySelector('#oranD')
+                                let indirimHesapla = document.querySelector('#indirimHesapla')
+
+                                indirimSelect.addEventListener("change", function (event) {
+                                    event.preventDefault()
+                                    let selectedInd = indirimSelect.value;
+
+                                    if (selectedInd == '0') {
+                                        normalD.style = "display:flex;"
+                                        indirimliD.style = "display:none;"
+                                        oranD.style = "display:flex;"
+                                    } else if (selectedInd == '1') {
+                                        normalD.style = "display:none;"
+                                        indirimliD.style = "display:flex;"
+                                        oranD.style = "display:flex;"
+                                    }
+                                    else if (selectedInd == '2') {
+                                        normalD.style = "display:flex;"
+                                        indirimliD.style = "display:flex;"
+                                        oranD.style = "display:none;"
+                                    }
+                                })
+
+
+
+
+                            }
+
+
+
+                            else if (secilenAltBaslik == "Kâr Hesaplama Aracı") {
                                 hesaplaPop.style = "display=flex;"
                                 hesaplaPop.innerHTML = '<form><b>Kredi Tutarı24:</b><div><input type="text" name="" id="dmGiris"><input type="submit" value="Hesapla" id="dmHesapla"></div></form>'
                             } else if (secilenAltBaslik == "Zam Hesaplama Aracı") {
