@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             // Burası HOCAM :D Start
                             let saka = prompt('Gizli bölgeye geçmek için 1 yaz.')
                             if (saka == 1) {
-                                alert('Şaka yaptım. Dive tıkladınız :D')
+                                alert('Şaka yaptım. Div\'e tıkladınız :D')
                             } else {
                                 console.log('yemedi :D')
                             }
