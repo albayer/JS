@@ -1,0 +1,15 @@
+Bu site, temel matematiksel işlemleri (toplama, çıkarma, çarpma, bölme) hızlı ve kolay bir şekilde yapmanızı sağlamak için 
+tasarlanmıştır. Kullanıcı dostu arayüzü sayesinde tüm yaş gruplarına hitap eder.
+
+Yapmanız gereken ilgili alanları ilgili veriler ile doldurup, option ve/veya radio seçeneklerinden size uygun olanı seçmek.
+-Hatalı girişlerde uyarı sistemi,
+-Mobil ve masaüstü uyumlu tasarım.
+
+-İçerik-
+-Kredi ile ilgili hesaplama araçları
+-Finans alanına ait döviz dönüştürme işlemlerini yapabileceğiniz araçlar
+-Eğitim alanı için ders notu hesaplama araçları
+-Sağlık alanı için farklı hesaplama araçları
+-Matematiksel işlemler için farklı dönüştürme ve hesaplama araçları
+-Muhasebe alanına ait tazminat, işsizlik maaşı ve yıllık izin hesaplama araçları
+-Ticari hesaplama araçları olarak kar,zarar hesabınızı yapabilir veya kargonuzun desisini öğrenebilirsiniz.
