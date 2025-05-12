@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             let saka = prompt('Gizli bölgeye geçmek için 1 yaz.')
                             if (saka == 1) {
                                 alert('Şaka yaptım. Div\'e tıkladınız :D')
-                            } else {
-                                console.log('yemedi :D')
+                            } else if(saka != '1' || saka == null) {
+                                
                             }
                             // Burası HOCAM :D End
                         } else if (event.target.tagName === 'H4') {
